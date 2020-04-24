@@ -1,4 +1,4 @@
-package com.hapityapp;
+package com.app.hapity;
 
 import com.facebook.react.ReactActivity;
 
