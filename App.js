@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import { RNCamera } from 'react-native-camera';
 import DeviceInfo from 'react-native-device-info';
+import { Button, ThemeProvider } from 'react-native-elements';
 const App: () => React$Node = () => {
   return (
     <>
