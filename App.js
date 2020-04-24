@@ -24,7 +24,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import NetInfo from "@react-native-community/netinfo";
 const App: () => React$Node = () => {
   return (
     <>
