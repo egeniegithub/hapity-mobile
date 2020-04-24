@@ -23,6 +23,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const App: () => React$Node = () => {
   return (
