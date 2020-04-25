@@ -31,6 +31,7 @@ import { Button, ThemeProvider } from 'react-native-elements';
 import Geolocation from 'react-native-geolocation-service';
 import HTMLView from 'react-native-htmlview';
 import ImagePicker from 'react-native-image-picker';
+import KeepAwake from 'react-native-keep-awake';
 const App: () => React$Node = () => {
   return (
     <>
