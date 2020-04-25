@@ -38,6 +38,7 @@ import Share from 'react-native-share';
 import { WebView } from 'react-native-webview';
 import Video from 'react-native-video';
 import RNFetchBlob from 'rn-fetch-blob'
+import { createStackNavigator, createAppContainer } from "react-navigation";
 const App: () => React$Node = () => {
   return (
     <>
