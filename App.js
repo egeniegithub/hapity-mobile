@@ -30,6 +30,7 @@ import DeviceInfo from 'react-native-device-info';
 import { Button, ThemeProvider } from 'react-native-elements';
 import Geolocation from 'react-native-geolocation-service';
 import HTMLView from 'react-native-htmlview';
+import ImagePicker from 'react-native-image-picker';
 const App: () => React$Node = () => {
   return (
     <>
