@@ -60,6 +60,51 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Hapity would like access to your music for upload Videos</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Hapity would like access to your Bluetooth to share video</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Hapity would like access to your bluetooth to share video</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Hapity would like access to your calender for upload videos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Hapity uses camera to share video in live broadcast.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Hapity would like access to your contacts for share videos</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Let the other users know from where you are streaming.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Let the other users know from where you are streaming.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Hapity uses microphone to speak in live broadcast.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Hapity would like access to your motion for live stream</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Hapity would like to save photos to your photo gallery</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Hapity uses photos to upload or download videos in library.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Hapity would like access to your voice for Recording for video</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
