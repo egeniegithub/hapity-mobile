@@ -14,6 +14,7 @@ import {
   View,
   Text,
   StatusBar,
+  NativeModules
 } from 'react-native';
 
 import {
@@ -39,6 +40,7 @@ import { WebView } from 'react-native-webview';
 import Video from 'react-native-video';
 import RNFetchBlob from 'rn-fetch-blob'
 import { createStackNavigator, createAppContainer } from "react-navigation";
+const { RNTwitterSignIn } = NativeModules
 const App: () => React$Node = () => {
   return (
     <>

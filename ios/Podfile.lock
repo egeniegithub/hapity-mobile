@@ -279,6 +279,9 @@ PODS:
     - React
   - react-native-keep-awake (4.0.0):
     - React
+  - react-native-login-twitter (3.0.2):
+    - React
+    - TwitterKit
   - react-native-netinfo (5.8.0):
     - React
   - react-native-video (4.4.5):
@@ -363,6 +366,9 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.3.0):
+    - TwitterCore (>= 3.1.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -411,6 +417,7 @@ DEPENDENCIES:
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
+  - react-native-login-twitter (from `../node_modules/react-native-login-twitter`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -433,6 +440,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - TwitterKit (~> 3.3.0)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -451,6 +459,8 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - TwitterCore
+    - TwitterKit
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -496,6 +506,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-keep-awake:
     :path: "../node_modules/react-native-keep-awake"
+  react-native-login-twitter:
+    :path: "../node_modules/react-native-login-twitter"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-video:
@@ -577,6 +589,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
   react-native-keep-awake: eba3137546b10003361b37c761f6c429b59814ae
+  react-native-login-twitter: f8d3e77b3c6d4ea4c1fa8d16e2dd94b1fc3baf28
   react-native-netinfo: 6458a467af4b3b7b0b87a179776ba6ba469e4f22
   react-native-video: aa527b0acb37f94c4491e70df0274cb26979405d
   react-native-webview: bdde2a3c4cbdc0122bc2bfba13603db193f0cc5c
@@ -598,9 +611,11 @@ SPEC CHECKSUMS:
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNShare: fea1801315aa8875d6db73a4010b14afcd568765
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: bd511fb09b9044dd96e7ec56f11c87e0ca6b2731
+PODFILE CHECKSUM: 192ec5dfeea82472d9e53fe51f91a9592fe13f43
 
 COCOAPODS: 1.8.3

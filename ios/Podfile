@@ -78,6 +78,7 @@ target 'hapityApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'FBSDKLoginKit'
+  pod 'TwitterKit', '~> 3.3.0'
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
