@@ -36,6 +36,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {PERMISSIONS} from 'react-native-permissions';
 import Share from 'react-native-share';
 import { WebView } from 'react-native-webview';
+import Video from 'react-native-video';
 const App: () => React$Node = () => {
   return (
     <>
