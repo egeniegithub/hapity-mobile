@@ -37,6 +37,7 @@ import {PERMISSIONS} from 'react-native-permissions';
 import Share from 'react-native-share';
 import { WebView } from 'react-native-webview';
 import Video from 'react-native-video';
+import RNFetchBlob from 'rn-fetch-blob'
 const App: () => React$Node = () => {
   return (
     <>
