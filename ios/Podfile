@@ -31,8 +31,6 @@ def add_flipper_pods!(versions = {})
   pod 'FlipperKit/FlipperKitHighlightOverlay', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitLayoutTextSearchable', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitNetworkPlugin', versions['Flipper'], :configuration => 'Debug'
-  pod 'FBSDKLoginKit'
-  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
 end
 
 # Post Install processing for Flipper
@@ -47,6 +45,7 @@ def flipper_post_install(installer)
 end
 
 target 'hapityApp' do
+  permissions_path = '../node_modules/react-native-permissions/ios'
   # Pods for hapityApp
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
@@ -78,6 +77,9 @@ target 'hapityApp' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'FBSDKLoginKit'
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
   target 'hapityAppTests' do
     inherit! :complete

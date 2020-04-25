@@ -33,6 +33,7 @@ import HTMLView from 'react-native-htmlview';
 import ImagePicker from 'react-native-image-picker';
 import KeepAwake from 'react-native-keep-awake';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {PERMISSIONS} from 'react-native-permissions';
 const App: () => React$Node = () => {
   return (
     <>
