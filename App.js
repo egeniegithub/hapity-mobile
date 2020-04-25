@@ -28,6 +28,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { RNCamera } from 'react-native-camera';
 import DeviceInfo from 'react-native-device-info';
 import { Button, ThemeProvider } from 'react-native-elements';
+import Geolocation from 'react-native-geolocation-service';
 const App: () => React$Node = () => {
   return (
     <>

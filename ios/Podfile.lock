@@ -271,6 +271,8 @@ PODS:
   - react-native-fbsdk/Share (1.1.2):
     - FBSDKShareKit (= 5.8)
     - React
+  - react-native-geolocation (1.4.2):
+    - React
   - react-native-netinfo (5.8.0):
     - React
   - React-RCTActionSheet (0.62.2):
@@ -382,6 +384,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
+  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -452,6 +455,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-fbsdk:
     :path: "../node_modules/react-native-fbsdk"
+  react-native-geolocation:
+    :path: "../node_modules/@react-native-community/geolocation"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   React-RCTActionSheet:
@@ -515,6 +520,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 53c0e028a95d58b1f4498ef7ce152b6c6b337595
   react-native-camera: 6fe72fd0a85732e2449928f9c59a2e0bf661ad3b
   react-native-fbsdk: c35d42169e64aaf66f01713c1e18d0674f7f6519
+  react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
   react-native-netinfo: 6458a467af4b3b7b0b87a179776ba6ba469e4f22
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
@@ -532,6 +538,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e95c5377c8c8ea83652671a7e1729a2fbe99c602
+PODFILE CHECKSUM: d9f2bdebaa95dd586e3ddca9c19afdadf579c230
 
 COCOAPODS: 1.8.3
