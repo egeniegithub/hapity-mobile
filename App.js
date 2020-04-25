@@ -1,131 +1,158 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React from "react";
+import { Image } from "react-native";
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  NativeModules
-} from 'react-native';
+  createStackNavigator,
+  createAppContainer,
+  createBottomTabNavigator
+} from "react-navigation";
+import Login from "./src/Login/Login";
+import RegisterNow from "./src/Login/RegisterNow";
+import History from "./src/Dashboards/History";
+import UploadBroadcast from "./src/Dashboards/UploadBroadcast";
+import MyAccount from "./src/Dashboards/MyAccount";
+import HistorySelection from "./src/History/HistorySelection";
+import SearchBroadcast from "./src/History/SearchBroadcast";
+import EditProfile from "./src/MyAccount/EditProfile";
+import Settings from "./src/MyAccount/Settings";
+import VideoDetail from "./src/History/VideoDetail";
+import ShareStory from "./src/Login/ShareStory";
+import Connect from "./src/Login/Connect";
+import Splash from "./src/Login/Splash";
+import TestHome from "./src/TestHome";
+import EditBroadcast from "./src/History/EditBroadcast";
+import VideoPlay from "./src/History/VideoPlay";
+import LiveStreaming from "./src/streaming/LiveStreaming";
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import AsyncStorage from '@react-native-community/async-storage';
-import NetInfo from "@react-native-community/netinfo";
-import { RNCamera } from 'react-native-camera';
-import DeviceInfo from 'react-native-device-info';
-import { Button, ThemeProvider } from 'react-native-elements';
-import Geolocation from 'react-native-geolocation-service';
-import HTMLView from 'react-native-htmlview';
-import ImagePicker from 'react-native-image-picker';
-import KeepAwake from 'react-native-keep-awake';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {PERMISSIONS} from 'react-native-permissions';
-import Share from 'react-native-share';
-import { WebView } from 'react-native-webview';
-import Video from 'react-native-video';
-import RNFetchBlob from 'rn-fetch-blob'
-import { createStackNavigator, createAppContainer } from "react-navigation";
-const { RNTwitterSignIn } = NativeModules
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+const colors = require("./src/Theme/Color");
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+const tabNavigator = createBottomTabNavigator(
+  {
+    History: {
+      screen: History,
+      navigationOptions: {
+        tabBarLabel: " ",
+        tabBarIcon: ({ tintColor }) =>
+          tintColor == "green" ? (
+            <Image
+              source={require("./assets/history_movie_green.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          ) : (
+            <Image
+              source={require("./assets/history_movie_white.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          )
+      }
+    },
+    UploadBroadcast: {
+      screen: UploadBroadcast,
+      navigationOptions: {
+        tabBarLabel: " ",
+        tabBarIcon: ({ tintColor }) =>
+          tintColor == "green" ? (
+            <Image
+              source={require("./assets/ic_upload_green.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          ) : (
+            <Image
+              source={require("./assets/ic_upload_white.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          )
+      }
+    },
+    MyAccount: {
+      screen: MyAccount,
+      navigationOptions: {
+        tabBarLabel: " ",
+        tabBarIcon: ({ tintColor }) =>
+          tintColor == "green" ? (
+            <Image
+              source={require("./assets/profile_nav_bar_green.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          ) : (
+            <Image
+              source={require("./assets/profile_nav_bar_white.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          )
+      }
+    }
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+  {
+    initialRouteName: "History",
+    defaultNavigationOptions: {
+      tabBarVisible: true
+    },
+    tabBarOptions: {
+      activeTintColor: "green",
+      inactiveTintColor: "white",
+      style: {
+        backgroundColor: colors.colorPrimary
+      },
+      showLabel: false
+    }
+  }
+);
 
-export default App;
+// export default createAppContainer(tabNavigator)
+
+// we have to write this blow becoz tabNavigator will show error.
+const AppNavigator = createStackNavigator(
+  {
+    TestHome: {
+      screen: TestHome
+    },
+    Splash: {
+      screen: Splash
+    },
+    Login: {
+      screen: Login
+    },
+    RegisterNow: {
+      screen: RegisterNow
+    },
+    ShareStory: {
+      screen: ShareStory
+    },
+    Connect: {
+      screen: Connect
+    },
+    HistorySelection: {
+      screen: HistorySelection
+    },
+    SearchBroadcast: {
+      screen: SearchBroadcast
+    },
+    VideoPlay: {
+      screen: VideoPlay
+    },
+    EditBroadcast: {
+      screen: EditBroadcast
+    },
+    EditProfile: {
+      screen: EditProfile
+    },
+    Settings: {
+      screen: Settings
+    },
+    VideoDetail: {
+      screen: VideoDetail
+    },
+    LiveStreaming: {
+      screen: LiveStreaming
+    },
+    History: tabNavigator
+  },
+  {
+    initialRouteName: "Splash",
+    defaultNavigationOptions: {
+      header: null
+    }
+  }
+);
+
+export default createAppContainer(AppNavigator);

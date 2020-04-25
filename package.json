@@ -12,7 +12,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/netinfo": "^5.8.0",
-    "crypto-js": "^4.0.0",
+    "crypto-js": "^3.1.9-1",
     "oauth-1.0a": "^2.2.6",
     "react": "16.11.0",
     "react-native": "0.62.2",
@@ -32,12 +32,13 @@
     "react-native-permissions": "^2.1.3",
     "react-native-progress": "^4.1.2",
     "react-native-reanimated": "^1.8.0",
+    "react-native-screens": "^2.7.0",
     "react-native-share": "^3.3.0",
     "react-native-simple-dialogs": "^1.2.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-video": "^4.4.5",
     "react-native-webview": "^9.3.0",
-    "react-navigation": "^4.3.8",
+    "react-navigation": "^3.11.0",
     "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
