@@ -1,3 +1,5 @@
 rootProject.name = 'hapityApp'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':webrtc-android-framework'
+project(':webrtc-android-framework').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ant-media-lib5/android/webrtc-android-framework')
 include ':app'

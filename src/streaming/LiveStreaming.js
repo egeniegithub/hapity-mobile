@@ -60,6 +60,7 @@ import KeepAwake from "react-native-keep-awake";
 import CameraScreen from "./CameraScreen";
 import CustomAppHeader from "../Components/CustomAppHeader";
 import * as colors from "../Theme/Color";
+import AntMediaLib5 from 'react-native-ant-media-lib5';
 
 const { RNTwitterSignIn } = NativeModules;
 var BroadcastManager = NativeModules.BroadcastModule;
@@ -689,6 +690,7 @@ class LiveStreaming extends React.Component {
     };
     console.log(this.state.videoSizePreset);
     if (this.state.keyboardNotOpen) {
+      AntMediaLib5.startLiveStream()
       return ( null
         // <BroadcastView
         //   style={styles.videoContainer}
