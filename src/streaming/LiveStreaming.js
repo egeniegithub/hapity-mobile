@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  ActivityIndicator
 } from "react-native";
 import { Header, Icon, Input } from "react-native-elements";
 // import BroadcastView from "react-native-wowza-gocoder";
@@ -77,7 +78,6 @@ class LiveStreaming extends React.Component {
       isLocationOn: false,
       startBroadcastDialog: false,
       broadcastStreamName: "",
-      serverName: "",
       location: "0,0",
       isSensitive: "NO",
       cameraPermission: false,
@@ -390,24 +390,6 @@ class LiveStreaming extends React.Component {
     }
   };
 
-  onBroadcastStart() {}
-
-  onBroadcastFail(res) {
-    console.log('onBroadcastFail : ' , res);
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: "History" })]
-    });
-    this.props.navigation.dispatch(resetAction);
-  }
-
-  onBroadcastStatusChange() {}
-
-  onBroadcastEventReceive() {}
-
-  onBroadcastErrorReceive() {}
-
-  onBroadcastVideoEncoded = () => {};
   onBroadcastStop = async () => {
     let data = await getListOfBroadcastToDownload();
     if (data === null || data === undefined) {
@@ -530,7 +512,7 @@ class LiveStreaming extends React.Component {
               this.state.image,
               this.state.metaInfo,
               result => {
-                console.log('startBroadcastUrl : ' , result);
+                console.log('startBroadcastUrl : ', result);
                 if (result.status === "error") {
                   this.setState({ startBroadcastDialog: false }, () => {
                     setTimeout(() => {
@@ -550,47 +532,31 @@ class LiveStreaming extends React.Component {
                           }
                         }
                       ]);
-                  },100);
+                    }, 100);
                   });
                 }
                 else if (result.response.status === "success") {
                   if (Platform.OS == "android") {
                     this.setState(
                       {
-                        serverName: result.response.server,
                         startBroadcasting: true,
                         broadcastID: result.response.broadcast_id
                       },
                       () => {
                         setTimeout(() => {
-                          if (this.state.switchCamera) {
-                            this.setState(
-                              {
-                                isFrontCamera: !this.state.isFrontCamera, // for switch camera if start from front camera
-                                isWozaFrontCamera: true
-                              },
-                              () => {
-                                setTimeout(() => {
-                                  this.setState({
-                                    broadcastRuning: true,
-                                    startBroadcastDialog: false
-                                  });
-                                }, 200);
-                              }
-                            );
-                          } else {
-                            this.setState({
-                              broadcastRuning: true,
-                              startBroadcastDialog: false
-                            });
-                          }
-                        }, 200);
+                          this.setState({
+                            broadcastRuning: true,
+                            startBroadcastDialog: false
+                          }, () => {
+                            this.getBroadCastView()
+                          });
+
+                        }, 100);
                       }
                     );
                   } else {
                     this.setState(
                       {
-                        serverName: result.response.server,
                         startBroadcastDialog: false,
                         startBroadcasting: true,
                         broadcastID: result.response.broadcast_id
@@ -615,7 +581,7 @@ class LiveStreaming extends React.Component {
                     timeStampBroadcastUrl(
                       res.user_info.token,
                       result.response.broadcast_id,
-                      hitResult => {}
+                      hitResult => { }
                     );
                   }, 60000);
                 }
@@ -664,60 +630,11 @@ class LiveStreaming extends React.Component {
     clearInterval(this.timeStampInterval);
   }
 
-  getBroadCastView = () => {
-    let sdkKey = "";
-    if (Platform.OS == "android") {
-      sdkKey = "GOSK-C246-010C-21B8-7444-C3CF";
-    } else {
-      sdkKey = "GOSK-C246-010C-D03B-95DB-7E58";
-    }
 
-    // let config = {
-    //   hostAddress: "52.18.33.132",
-    //   applicationName: "live",
-    //   username: "hapity_app",
-    //   password: "hapity_app",
-    //   streamName: this.state.broadcastStreamName,
-    //   sdkLicenseKey: sdkKey
-    // };
-    let config = {
-      hostAddress: this.state.serverName,
-      applicationName: "live",
-      username: "wozpubuser",
-      password: "Pu8Eg3n3_",
-      streamName: this.state.broadcastStreamName,
-      sdkLicenseKey: sdkKey
-    };
-    console.log(this.state.videoSizePreset);
+
+  getBroadCastView = () => {
     if (this.state.keyboardNotOpen) {
       AntMediaLib5.startLiveStream()
-      return ( null
-        // <BroadcastView
-        //   style={styles.videoContainer}
-        //   hostAddress={config.hostAddress}
-        //   applicationName={config.applicationName}
-        //   broadcastName={config.streamName}
-        //   broadcasting={this.state.broadcastRuning}
-        //   username={config.username}
-        //   password={config.password}
-        //   sizePreset={this.state.videoSizePreset}
-        //   // sizePreset={1}
-        //   port={1935}
-        //   muted={false}
-        //   flashOn={this.state.isFlashOn}
-        //   frontCamera={this.state.isFrontCamera}
-        //   onBroadcastStart={this.onBroadcastStart}
-        //   onBroadcastFail={this.onBroadcastFail}
-        //   onBroadcastStatusChange={this.onBroadcastStatusChange}
-        //   onBroadcastEventReceive={this.onBroadcastEventReceive}
-        //   onBroadcastErrorReceive={this.onBroadcastErrorReceive}
-        //   onBroadcastVideoEncoded={this.onBroadcastVideoEncoded}
-        //   onBroadcastStop={this.onBroadcastStop}
-        //   sdkLicenseKey={config.sdkLicenseKey}
-        // />
-      );
-    } else {
-      return null;
     }
   };
 
@@ -773,7 +690,24 @@ class LiveStreaming extends React.Component {
     }
   };
 
+  enBroadcast = () => {
+    getLoginSL().then(res => {
+      stopBroadcast(
+        res.user_info.token,
+        this.state.broadcastID,
+        result => {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: "History" })]
+          });
+          this.props.navigation.dispatch(resetAction);
+        }
+      );
+    });
+  }
+
   render() {
+    const { startBroadcasting } = this.state;
     let timeForKeyboard = 0;
     if (!this.state.keyboardNotOpen) {
       timeForKeyboard = 2000;
@@ -782,9 +716,7 @@ class LiveStreaming extends React.Component {
       return (
         <View style={{ flex: 1, backgroundColor: colors.colorDarkGray }}>
           <KeepAwake />
-          {this.state.startBroadcasting ? (
-            this.getBroadCastView()
-          ) : (
+          {!startBroadcasting && (
             <CameraScreen
               ref={ref => {
                 this.RNCameraView = ref;
@@ -792,7 +724,15 @@ class LiveStreaming extends React.Component {
               isFrontCamera={this.state.isFrontCamera}
               getSnapShot={this.getSnapShot}
               keyboardNotOpen={this.state.keyboardNotOpen}
-            />
+            />)}
+          {startBroadcasting && (
+            <View style={{flex:1, justifyContent: "center", alignItems: "center" }}>
+              <BroadcastTimer enBroadcast={this.enBroadcast}/>
+              <ActivityIndicator
+                size="large"
+                color={colors.colorPrimary}
+              />
+            </View>
           )}
           <View
             style={[
@@ -809,15 +749,15 @@ class LiveStreaming extends React.Component {
                 }}
               />
             ) : (
-              <Header
-                centerComponent={{
-                  text: "Live Stream",
-                  style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
-                }}
-                containerStyle={headerContainerStyle}
-                leftComponent={this.leftArrowGoBack}
-              />
-            )}
+                <Header
+                  centerComponent={{
+                    text: "Live Stream",
+                    style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
+                  }}
+                  containerStyle={headerContainerStyle}
+                  leftComponent={this.leftArrowGoBack}
+                />
+              )}
 
             <ProgressDialog
               visible={this.state.startBroadcastDialog}
@@ -843,97 +783,85 @@ class LiveStreaming extends React.Component {
                 />
               ) : null}
 
-              {this.state.startBroadcasting ? (
-                <View style={{ alignItems: "center" }}>
-                  <BroadcastTimer />
-                  <TouchableOpacity
-                    onPress={this.stopBroadcast}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 60, height: 60 }}
-                      source={require("../../assets/record_red.png")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={{ alignItems: "center" }}>
-                  <TouchableOpacity
-                    onPress={this.twitterSharing}
-                    style={{ marginTop: 4, padding: 8 }}
-                  >
-                    {this.state.isTwitterSharingOn ? (
-                      <Image
-                        source={require("../../assets/tw_login_button.png")}
-                        style={{ width: 30, height: 30 }}
-                      />
-                    ) : (
-                      <Image
-                        source={require("../../assets/twitter_disable.png")}
-                        style={{ width: 30, height: 30 }}
-                      />
-                    )}
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Keyboard.dismiss();
-                      setTimeout(() => {
-                        if (
-                          this.state.isFrontCamera &&
-                          Platform.OS == "android"
-                        ) {
-                          if (!this.state.isImageSelected) {
-                            this.setState(
-                              {
-                                startBroadcastDialog: true
-                              },
-                              () => {
-                                this.RNCameraView.takePicture();
-                              }
-                            );
+              {!startBroadcasting && (
+                  <View style={{ alignItems: "center" }}>
+                    <TouchableOpacity
+                      onPress={this.twitterSharing}
+                      style={{ marginTop: 4, padding: 8 }}
+                    >
+                      {this.state.isTwitterSharingOn ? (
+                        <Image
+                          source={require("../../assets/tw_login_button.png")}
+                          style={{ width: 30, height: 30 }}
+                        />
+                      ) : (
+                          <Image
+                            source={require("../../assets/twitter_disable.png")}
+                            style={{ width: 30, height: 30 }}
+                          />
+                        )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Keyboard.dismiss();
+                        setTimeout(() => {
+                          if (
+                            this.state.isFrontCamera &&
+                            Platform.OS == "android"
+                          ) {
+                            if (!this.state.isImageSelected) {
+                              this.setState(
+                                {
+                                  startBroadcastDialog: true
+                                },
+                                () => {
+                                  this.RNCameraView.takePicture();
+                                }
+                              );
+                            } else {
+                              this.setState(
+                                {
+                                  isFrontCamera: false,
+                                  switchCamera: true
+                                },
+                                () => {
+                                  setTimeout(() => {
+                                    this.broadcastStart();
+                                  }, 200);
+                                }
+                              );
+                            }
                           } else {
-                            this.setState(
-                              {
-                                isFrontCamera: false,
-                                switchCamera: true
-                              },
-                              () => {
-                                setTimeout(() => {
-                                  this.broadcastStart();
-                                }, 200);
-                              }
-                            );
+                            if (!this.state.isImageSelected) {
+                              this.setState(
+                                {
+                                  startBroadcastDialog: true
+                                },
+                                () => {
+                                  this.RNCameraView.takePicture();
+                                }
+                              );
+                            } else {
+                              this.broadcastStart();
+                            }
                           }
-                        } else {
-                          if (!this.state.isImageSelected) {
-                            this.setState(
-                              {
-                                startBroadcastDialog: true
-                              },
-                              () => {
-                                this.RNCameraView.takePicture();
-                              }
-                            );
-                          } else {
-                            this.broadcastStart();
-                          }
-                        }
-                      }, timeForKeyboard);
-                    }}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 60, height: 60 }}
-                      source={require("../../assets/record_green.png")}
-                    />
-                  </TouchableOpacity>
-                  {this.state.broadcastStartOnFirstLaunch ? (
-                    <StartBroadcastCountDown
-                      startBroacastOnLaunch={this.startBroacastOnLaunch}
-                    />
-                  ) : null}
-                </View>
-              )}
+                        }, timeForKeyboard);
+                      }}
+                      style={{ marginTop: 4, padding: 4 }}
+                    >
+                      <Image
+                        style={{ width: 60, height: 60 }}
+                        source={require("../../assets/record_green.png")}
+                      />
+                    </TouchableOpacity>
+                    {this.state.broadcastStartOnFirstLaunch ? (
+                      <StartBroadcastCountDown
+                        startBroacastOnLaunch={this.startBroacastOnLaunch}
+                      />
+                    ) : null}
+                  </View>
+                )}
+                {!startBroadcasting && (
               <View style={styles.buttonsRightViewStyle}>
                 <TouchableOpacity
                   onPress={() => {
@@ -954,12 +882,12 @@ class LiveStreaming extends React.Component {
                             } else {
                               setFrontCamera(
                                 JSON.stringify(this.state.isFrontCamera)
-                              ).then(() => {});
+                              ).then(() => { });
                             }
                           } else {
                             setFrontCamera(
                               JSON.stringify(this.state.isFrontCamera)
-                            ).then(() => {});
+                            ).then(() => { });
                           }
                         }
                       }
@@ -984,16 +912,16 @@ class LiveStreaming extends React.Component {
                     />
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity
-                    onPress={() => this.setState({ isFlashOn: true })}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 40, height: 40 }}
-                      source={require("../../assets/flash_off.png")}
-                    />
-                  </TouchableOpacity>
-                )}
+                    <TouchableOpacity
+                      onPress={() => this.setState({ isFlashOn: true })}
+                      style={{ marginTop: 4, padding: 4 }}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40 }}
+                        source={require("../../assets/flash_off.png")}
+                      />
+                    </TouchableOpacity>
+                  )}
 
                 {this.state.isImageSelected ? (
                   <TouchableOpacity
@@ -1010,16 +938,16 @@ class LiveStreaming extends React.Component {
                     />
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity
-                    onPress={this._pickImage}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 40, height: 40, opacity: 0.2 }}
-                      source={require("../../assets/gallery.png")}
-                    />
-                  </TouchableOpacity>
-                )}
+                    <TouchableOpacity
+                      onPress={this._pickImage}
+                      style={{ marginTop: 4, padding: 4 }}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40, opacity: 0.2 }}
+                        source={require("../../assets/gallery.png")}
+                      />
+                    </TouchableOpacity>
+                  )}
 
                 {this.state.isLocationOn ? (
                   <TouchableOpacity
@@ -1032,47 +960,18 @@ class LiveStreaming extends React.Component {
                     />
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity
-                    onPress={this.requestLocationPermission}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 40, height: 40, opacity: 0.2 }}
-                      source={require("../../assets/location.png")}
-                    />
-                  </TouchableOpacity>
-                )}
-
-                {/* {!this.state.startBroadcasting ? (
-                  this.state.videoSizePreset === 1 ? (
                     <TouchableOpacity
-                      onPress={() => this.setState({ videoSizePreset: 2 })}
+                      onPress={this.requestLocationPermission}
                       style={{ marginTop: 4, padding: 4 }}
                     >
                       <Image
-                        style={{ width: 40, height: 40, tintColor: "#fff" }}
-                        source={require("../../assets/icon_HD.png")}
+                        style={{ width: 40, height: 40, opacity: 0.2 }}
+                        source={require("../../assets/location.png")}
                       />
                     </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={() => this.setState({ videoSizePreset: 1 })}
-                      style={{ marginTop: 4, padding: 4 }}
-                    >
-                      <Image
-                        style={{
-                          width: 40,
-                          height: 40,
-                          opacity: 0.2,
-                          tintColor: "#fff"
-                        }}
-                        source={require("../../assets/icon_HD.png")}
-                      />
-                    </TouchableOpacity>
-                  )
-                ) : null} */}
+                  )}
               </View>
-              {this.state.startBroadcasting ? <BroadcastLiveIcon /> : null}
+              )}
             </View>
           </View>
         </View>
@@ -1090,15 +989,15 @@ class LiveStreaming extends React.Component {
                 }}
               />
             ) : (
-              <Header
-                centerComponent={{
-                  text: "Live Stream",
-                  style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
-                }}
-                containerStyle={headerContainerStyle}
-                leftComponent={this.leftArrowGoBack}
-              />
-            )}
+                <Header
+                  centerComponent={{
+                    text: "Live Stream",
+                    style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
+                  }}
+                  containerStyle={headerContainerStyle}
+                  leftComponent={this.leftArrowGoBack}
+                />
+              )}
             <View
               style={{
                 flex: 1,
