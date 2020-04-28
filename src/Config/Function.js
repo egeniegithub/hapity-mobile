@@ -32,7 +32,7 @@ export const streamName = () => {
     today.getHours() + "" + today.getMinutes() + "" + today.getSeconds();
   let date = today.getFullYear() + "" + today.getMonth() + "" + today.getDate();
   let miliSecond = today.getMilliseconds();
-  let stream = time + date + miliSecond + ".stream";
+  let stream = "stream_" + time + date + miliSecond
 
   return stream;
 };

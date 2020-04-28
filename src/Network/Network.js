@@ -1,7 +1,8 @@
 import React from "react";
 import RNFetchBlob from "rn-fetch-blob";
 
-const baseUrl = "https://www.hapity.com/api/";
+const baseUrl = "https://staging.hapity.com/api/";
+// const baseUrl = "https://www.hapity.com/api/";
 // const baseUrl = "http://192.168.20.251/hapity-api/api/";
 
 class ApiName {
