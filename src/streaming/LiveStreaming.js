@@ -96,6 +96,7 @@ class LiveStreaming extends React.Component {
       switchCamera: false,
       videoSizePreset: 1,
       metaInfo: {},
+      isAntMediaFrontCamera: false,
     };
   }
 
@@ -114,11 +115,11 @@ class LiveStreaming extends React.Component {
         "hardwareBackPress",
         this.handleBackPress
       );
-      getFrontCamera().then(res => {
-        this.setState({
-          isFrontCamera: JSON.parse(res)
-        });
-      });
+      // getFrontCamera().then(res => {
+      //   this.setState({
+      //     isFrontCamera: JSON.parse(res)
+      //   });
+      // });
     } else {
       this.iosPermission();
     }
@@ -633,8 +634,9 @@ class LiveStreaming extends React.Component {
 
 
   getBroadCastView = () => {
-    if (this.state.keyboardNotOpen) {
-      AntMediaLib5.startLiveStream()
+    const {keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera} = this.state;
+    if (keyboardNotOpen) {
+      AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
     }
   };
 
@@ -868,28 +870,29 @@ class LiveStreaming extends React.Component {
                     this.setState(
                       {
                         isFrontCamera: !this.state.isFrontCamera,
-                        isFlashOn: false
+                        isFlashOn: false,
+                        isAntMediaFrontCamera: !this.state.isAntMediaFrontCamera
                       },
                       () => {
-                        if (Platform.OS === "android") {
-                          if (this.state.broadcastRuning) {
-                            if (this.state.isWozaFrontCamera) {
-                              setFrontCamera(
-                                JSON.stringify(this.state.isFrontCamera)
-                              ).then(() => {
-                                // android black screen issue when again start and switch camera
-                              });
-                            } else {
-                              setFrontCamera(
-                                JSON.stringify(this.state.isFrontCamera)
-                              ).then(() => { });
-                            }
-                          } else {
-                            setFrontCamera(
-                              JSON.stringify(this.state.isFrontCamera)
-                            ).then(() => { });
-                          }
-                        }
+                        // if (Platform.OS === "android") {
+                          // if (this.state.broadcastRuning) {
+                          //   if (this.state.isWozaFrontCamera) {
+                          //     setFrontCamera(
+                          //       JSON.stringify(this.state.isFrontCamera)
+                          //     ).then(() => {
+                          //       // android black screen issue when again start and switch camera
+                          //     });
+                          //   } else {
+                          //     setFrontCamera(
+                          //       JSON.stringify(this.state.isFrontCamera)
+                          //     ).then(() => { });
+                          //   }
+                          // } else {
+                          //   setFrontCamera(
+                          //     JSON.stringify(this.state.isFrontCamera)
+                          //   ).then(() => { });
+                          // }
+                        // }
                       }
                     );
                   }}
