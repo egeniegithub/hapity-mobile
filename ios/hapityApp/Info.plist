@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>hapityApp</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -75,7 +75,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Let the other users know from where you are streaming.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Let the other users know from where you are streaming.</string>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Hapity uses microphone to speak in live broadcast.</string>
 	<key>NSMotionUsageDescription</key>
@@ -105,8 +105,6 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
