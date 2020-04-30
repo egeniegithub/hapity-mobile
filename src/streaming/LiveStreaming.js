@@ -52,7 +52,7 @@ import {
   permissionCheck,
   permissionRequest
 } from "../Permissions/AndroidPermission";
-import Permissions from "react-native-permissions";
+import { checkMultiple, PERMISSIONS, request, openSettings } from 'react-native-permissions';
 import AndroidOpenSettings from "react-native-android-open-settings";
 import BroadcastTimer from "../Components/BroadcastTimer";
 import BroadcastLiveIcon from "../Components/BroadcastLiveIcon";
@@ -243,23 +243,23 @@ class LiveStreaming extends React.Component {
   };
 
   iosPermission = () => {
-    Permissions.checkMultiple(["camera", "microphone"]).then(response => {
+    checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MICROPHONE]).then(response => {
       if (
-        response.camera == "authorized" &&
-        response.microphone == "authorized"
+        response[PERMISSIONS.IOS.CAMERA] == "granted" &&
+        response[PERMISSIONS.IOS.MICROPHONE] == "granted"
       ) {
         this.setState({
           cameraPermission: true,
           microPhonePermission: true
         });
-      } else if (response.camera == "undetermined") {
+      } else if (response[PERMISSIONS.IOS.CAMERA] == "denied") {
         // first time for both permission
-        Permissions.request("camera").then(response => {
-          if (response == "authorized") {
+        request(PERMISSIONS.IOS.CAMERA).then(response => {
+          if (response == "granted") {
             this.setState({ cameraPermission: true }, () => {
-              if (response.microphone == "undetermined") {
-                Permissions.request("microphone").then(response => {
-                  if (response == "authorized") {
+              if (response[PERMISSIONS.IOS.MICROPHONE] == "denied") {
+                request(PERMISSIONS.IOS.MICROPHONE).then(response => {
+                  if (response == "granted") {
                     this.setState({
                       microPhonePermission: true,
                       enablePermission: true
@@ -275,9 +275,9 @@ class LiveStreaming extends React.Component {
           }
         });
       }
-      if (response.microphone == "undetermined") {
-        Permissions.request("microphone").then(response => {
-          if (response == "authorized") {
+      if (response[PERMISSIONS.IOS.MICROPHONE] == "denied") {
+        request(PERMISSIONS.IOS.MICROPHONE).then(response => {
+          if (response == "granted") {
             this.setState({
               microPhonePermission: true,
               enablePermission: true
@@ -347,7 +347,7 @@ class LiveStreaming extends React.Component {
     if (Platform.OS == "android") {
       AndroidOpenSettings.appDetailsSettings();
     } else {
-      Permissions.openSettings();
+      openSettings().catch(() => { });
     }
   };
 
@@ -451,37 +451,37 @@ class LiveStreaming extends React.Component {
   };
 
   requestLocationPermission = async () => {
-    if (this.state.startBroadcasting) {
-      return;
-    }
-    if (Platform.OS === "ios") {
-      Permissions.check("location").then(res => {
-        if (res == "undetermined") {
-          Permissions.request("location").then(response => {
-            if (response == "authorized") {
-              this.setCurrentLocation();
-            }
-          });
-        } else if (res == "authorized") {
-          this.setCurrentLocation();
-        } else {
-          Permissions.openSettings();
-        }
-      });
-    } else {
-      let granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "App Geolocation Permission",
-          message: "App needs access to your phone's location."
-        }
-      );
+    // if (this.state.startBroadcasting) {
+    //   return;
+    // }
+    // if (Platform.OS === "ios") {
+    //   Permissions.check("location").then(res => {
+    //     if (res == "undetermined") {
+    //       Permissions.request("location").then(response => {
+    //         if (response == "authorized") {
+    //           this.setCurrentLocation();
+    //         }
+    //       });
+    //     } else if (res == "authorized") {
+    //       this.setCurrentLocation();
+    //     } else {
+    //       Permissions.openSettings();
+    //     }
+    //   });
+    // } else {
+    //   let granted = await PermissionsAndroid.request(
+    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    //     {
+    //       title: "App Geolocation Permission",
+    //       message: "App needs access to your phone's location."
+    //     }
+    //   );
 
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        this.setCurrentLocation();
-      } else {
-      }
-    }
+    //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //     this.setCurrentLocation();
+    //   } else {
+    //   }
+    // }
   };
 
   broadcastStart = () => {
@@ -607,7 +607,7 @@ class LiveStreaming extends React.Component {
                 res.user_info.token,
                 this.state.broadcastID,
                 result => {
-                  console.log('stopBroadcast : ' , result);
+                  console.log('stopBroadcast : ', result);
                 }
               );
               this.setState({
@@ -634,7 +634,7 @@ class LiveStreaming extends React.Component {
 
 
   getBroadCastView = () => {
-    const {keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera} = this.state;
+    const { keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera } = this.state;
     if (keyboardNotOpen) {
       AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
     }
@@ -728,8 +728,8 @@ class LiveStreaming extends React.Component {
               keyboardNotOpen={this.state.keyboardNotOpen}
             />)}
           {startBroadcasting && (
-            <View style={{flex:1, justifyContent: "center", alignItems: "center" }}>
-              <BroadcastTimer enBroadcast={this.enBroadcast}/>
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+              <BroadcastTimer enBroadcast={this.enBroadcast} />
               <ActivityIndicator
                 size="large"
                 color={colors.colorPrimary}
@@ -786,95 +786,95 @@ class LiveStreaming extends React.Component {
               ) : null}
 
               {!startBroadcasting && (
-                  <View style={{ alignItems: "center" }}>
-                    <TouchableOpacity
-                      onPress={this.twitterSharing}
-                      style={{ marginTop: 4, padding: 8 }}
-                    >
-                      {this.state.isTwitterSharingOn ? (
+                <View style={{ alignItems: "center" }}>
+                  <TouchableOpacity
+                    onPress={this.twitterSharing}
+                    style={{ marginTop: 4, padding: 8 }}
+                  >
+                    {this.state.isTwitterSharingOn ? (
+                      <Image
+                        source={require("../../assets/tw_login_button.png")}
+                        style={{ width: 30, height: 30 }}
+                      />
+                    ) : (
                         <Image
-                          source={require("../../assets/tw_login_button.png")}
+                          source={require("../../assets/twitter_disable.png")}
                           style={{ width: 30, height: 30 }}
                         />
-                      ) : (
-                          <Image
-                            source={require("../../assets/twitter_disable.png")}
-                            style={{ width: 30, height: 30 }}
-                          />
-                        )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        Keyboard.dismiss();
-                        setTimeout(() => {
-                          if (
-                            this.state.isFrontCamera &&
-                            Platform.OS == "android"
-                          ) {
-                            if (!this.state.isImageSelected) {
-                              this.setState(
-                                {
-                                  startBroadcastDialog: true
-                                },
-                                () => {
-                                  this.RNCameraView.takePicture();
-                                }
-                              );
-                            } else {
-                              this.setState(
-                                {
-                                  isFrontCamera: false,
-                                  switchCamera: true
-                                },
-                                () => {
-                                  setTimeout(() => {
-                                    this.broadcastStart();
-                                  }, 200);
-                                }
-                              );
-                            }
+                      )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Keyboard.dismiss();
+                      setTimeout(() => {
+                        if (
+                          this.state.isFrontCamera &&
+                          Platform.OS == "android"
+                        ) {
+                          if (!this.state.isImageSelected) {
+                            this.setState(
+                              {
+                                startBroadcastDialog: true
+                              },
+                              () => {
+                                this.RNCameraView.takePicture();
+                              }
+                            );
                           } else {
-                            if (!this.state.isImageSelected) {
-                              this.setState(
-                                {
-                                  startBroadcastDialog: true
-                                },
-                                () => {
-                                  this.RNCameraView.takePicture();
-                                }
-                              );
-                            } else {
-                              this.broadcastStart();
-                            }
+                            this.setState(
+                              {
+                                isFrontCamera: false,
+                                switchCamera: true
+                              },
+                              () => {
+                                setTimeout(() => {
+                                  this.broadcastStart();
+                                }, 200);
+                              }
+                            );
                           }
-                        }, timeForKeyboard);
-                      }}
-                      style={{ marginTop: 4, padding: 4 }}
-                    >
-                      <Image
-                        style={{ width: 60, height: 60 }}
-                        source={require("../../assets/record_green.png")}
-                      />
-                    </TouchableOpacity>
-                    {this.state.broadcastStartOnFirstLaunch ? (
-                      <StartBroadcastCountDown
-                        startBroacastOnLaunch={this.startBroacastOnLaunch}
-                      />
-                    ) : null}
-                  </View>
-                )}
-                {!startBroadcasting && (
-              <View style={styles.buttonsRightViewStyle}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState(
-                      {
-                        isFrontCamera: !this.state.isFrontCamera,
-                        isFlashOn: false,
-                        isAntMediaFrontCamera: !this.state.isAntMediaFrontCamera
-                      },
-                      () => {
-                        // if (Platform.OS === "android") {
+                        } else {
+                          if (!this.state.isImageSelected) {
+                            this.setState(
+                              {
+                                startBroadcastDialog: true
+                              },
+                              () => {
+                                this.RNCameraView.takePicture();
+                              }
+                            );
+                          } else {
+                            this.broadcastStart();
+                          }
+                        }
+                      }, timeForKeyboard);
+                    }}
+                    style={{ marginTop: 4, padding: 4 }}
+                  >
+                    <Image
+                      style={{ width: 60, height: 60 }}
+                      source={require("../../assets/record_green.png")}
+                    />
+                  </TouchableOpacity>
+                  {this.state.broadcastStartOnFirstLaunch ? (
+                    <StartBroadcastCountDown
+                      startBroacastOnLaunch={this.startBroacastOnLaunch}
+                    />
+                  ) : null}
+                </View>
+              )}
+              {!startBroadcasting && (
+                <View style={styles.buttonsRightViewStyle}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState(
+                        {
+                          isFrontCamera: !this.state.isFrontCamera,
+                          isFlashOn: false,
+                          isAntMediaFrontCamera: !this.state.isAntMediaFrontCamera
+                        },
+                        () => {
+                          // if (Platform.OS === "android") {
                           // if (this.state.broadcastRuning) {
                           //   if (this.state.isWozaFrontCamera) {
                           //     setFrontCamera(
@@ -892,88 +892,88 @@ class LiveStreaming extends React.Component {
                           //     JSON.stringify(this.state.isFrontCamera)
                           //   ).then(() => { });
                           // }
-                        // }
-                      }
-                    );
-                  }}
-                  style={{ marginTop: 4, padding: 4 }}
-                >
-                  <Image
-                    style={{ width: 40, height: 40 }}
-                    source={require("../../assets/camera_switch.png")}
-                  />
-                </TouchableOpacity>
-
-                {this.state.isFlashOn ? (
-                  <TouchableOpacity
-                    onPress={() => this.setState({ isFlashOn: false })}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 40, height: 40 }}
-                      source={require("../../assets/flash_on.png")}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity
-                      onPress={() => this.setState({ isFlashOn: true })}
-                      style={{ marginTop: 4, padding: 4 }}
-                    >
-                      <Image
-                        style={{ width: 40, height: 40 }}
-                        source={require("../../assets/flash_off.png")}
-                      />
-                    </TouchableOpacity>
-                  )}
-
-                {this.state.isImageSelected ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({
-                        isImageSelected: false
-                      });
+                          // }
+                        }
+                      );
                     }}
                     style={{ marginTop: 4, padding: 4 }}
                   >
                     <Image
                       style={{ width: 40, height: 40 }}
-                      source={require("../../assets/gallery.png")}
+                      source={require("../../assets/camera_switch.png")}
                     />
                   </TouchableOpacity>
-                ) : (
+
+                  {this.state.isFlashOn ? (
                     <TouchableOpacity
-                      onPress={this._pickImage}
+                      onPress={() => this.setState({ isFlashOn: false })}
                       style={{ marginTop: 4, padding: 4 }}
                     >
                       <Image
-                        style={{ width: 40, height: 40, opacity: 0.2 }}
+                        style={{ width: 40, height: 40 }}
+                        source={require("../../assets/flash_on.png")}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                      <TouchableOpacity
+                        onPress={() => this.setState({ isFlashOn: true })}
+                        style={{ marginTop: 4, padding: 4 }}
+                      >
+                        <Image
+                          style={{ width: 40, height: 40 }}
+                          source={require("../../assets/flash_off.png")}
+                        />
+                      </TouchableOpacity>
+                    )}
+
+                  {this.state.isImageSelected ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({
+                          isImageSelected: false
+                        });
+                      }}
+                      style={{ marginTop: 4, padding: 4 }}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40 }}
                         source={require("../../assets/gallery.png")}
                       />
                     </TouchableOpacity>
-                  )}
+                  ) : (
+                      <TouchableOpacity
+                        onPress={this._pickImage}
+                        style={{ marginTop: 4, padding: 4 }}
+                      >
+                        <Image
+                          style={{ width: 40, height: 40, opacity: 0.2 }}
+                          source={require("../../assets/gallery.png")}
+                        />
+                      </TouchableOpacity>
+                    )}
 
-                {this.state.isLocationOn ? (
-                  <TouchableOpacity
-                    onPress={() => this.setState({ isLocationOn: false })}
-                    style={{ marginTop: 4, padding: 4 }}
-                  >
-                    <Image
-                      style={{ width: 40, height: 40 }}
-                      source={require("../../assets/location.png")}
-                    />
-                  </TouchableOpacity>
-                ) : (
+                  {this.state.isLocationOn ? (
                     <TouchableOpacity
-                      onPress={this.requestLocationPermission}
+                      onPress={() => this.setState({ isLocationOn: false })}
                       style={{ marginTop: 4, padding: 4 }}
                     >
                       <Image
-                        style={{ width: 40, height: 40, opacity: 0.2 }}
+                        style={{ width: 40, height: 40 }}
                         source={require("../../assets/location.png")}
                       />
                     </TouchableOpacity>
-                  )}
-              </View>
+                  ) : (
+                      <TouchableOpacity
+                        onPress={this.requestLocationPermission}
+                        style={{ marginTop: 4, padding: 4 }}
+                      >
+                        <Image
+                          style={{ width: 40, height: 40, opacity: 0.2 }}
+                          source={require("../../assets/location.png")}
+                        />
+                      </TouchableOpacity>
+                    )}
+                </View>
               )}
             </View>
           </View>
