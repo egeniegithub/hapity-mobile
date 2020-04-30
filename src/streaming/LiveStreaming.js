@@ -52,7 +52,7 @@ import {
   permissionCheck,
   permissionRequest
 } from "../Permissions/AndroidPermission";
-import { checkMultiple, PERMISSIONS, request, openSettings } from 'react-native-permissions';
+import { checkMultiple, PERMISSIONS, request, openSettings, check } from 'react-native-permissions';
 import AndroidOpenSettings from "react-native-android-open-settings";
 import BroadcastTimer from "../Components/BroadcastTimer";
 import BroadcastLiveIcon from "../Components/BroadcastLiveIcon";
@@ -451,37 +451,37 @@ class LiveStreaming extends React.Component {
   };
 
   requestLocationPermission = async () => {
-    // if (this.state.startBroadcasting) {
-    //   return;
-    // }
-    // if (Platform.OS === "ios") {
-    //   Permissions.check("location").then(res => {
-    //     if (res == "undetermined") {
-    //       Permissions.request("location").then(response => {
-    //         if (response == "authorized") {
-    //           this.setCurrentLocation();
-    //         }
-    //       });
-    //     } else if (res == "authorized") {
-    //       this.setCurrentLocation();
-    //     } else {
-    //       Permissions.openSettings();
-    //     }
-    //   });
-    // } else {
-    //   let granted = await PermissionsAndroid.request(
-    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //     {
-    //       title: "App Geolocation Permission",
-    //       message: "App needs access to your phone's location."
-    //     }
-    //   );
+    if (this.state.startBroadcasting) {
+      return;
+    }
+    if (Platform.OS === "ios") {
+      check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then(res => {
+        if (res == "denied") {
+          request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then(response => {
+            if (response == "granted") {
+              this.setCurrentLocation();
+            }
+          });
+        } else if (res == "granted") {
+          this.setCurrentLocation();
+        } else {
+          openSettings().then(() => { });
+        }
+      });
+    } else {
+      let granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "App Geolocation Permission",
+          message: "App needs access to your phone's location."
+        }
+      );
 
-    //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //     this.setCurrentLocation();
-    //   } else {
-    //   }
-    // }
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.setCurrentLocation();
+      } else {
+      }
+    }
   };
 
   broadcastStart = () => {
