@@ -7,7 +7,6 @@ import {
   Image,
   Switch,
   Alert,
-  Clipboard,
   Platform
 } from "react-native";
 import { Header, Divider } from "react-native-elements";
@@ -26,6 +25,7 @@ import {
 import { StackActions, NavigationActions } from "react-navigation";
 import { headerContainerStyle } from "../Config/Constants";
 import CustomAppHeader from "../Components/CustomAppHeader";
+import Clipboard from "@react-native-community/clipboard";
 
 const colors = require("../Theme/Color");
 
