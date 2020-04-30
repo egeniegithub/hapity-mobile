@@ -27,7 +27,6 @@ export default class EditBroadcast extends React.Component {
       title: "",
       description: "",
       picture: "",
-      video: "",
       streamUrl: "",
       streamId: "",
       loadingUpload: false,
@@ -157,12 +156,10 @@ export default class EditBroadcast extends React.Component {
         if (Platform.OS === "android") {
           path = response.path;
         } else {
-          source = response.origURL;
           path = response.origURL;
         }
 
         this.setState({
-          video: source,
           videoPath: path
         });
       }
@@ -244,7 +241,7 @@ export default class EditBroadcast extends React.Component {
           >
             <View style={{ width: 100, height: 130 }}>
               <TouchableOpacity onPress={this._pickVideo}>
-                {this.state.video == "" ? (
+                {this.state.videoPath == "" ? (
                   <Image
                     style={{ height: 100, width: 100 }}
                     source={require("../../assets/upload_broadcast_video_holo.png")}
@@ -252,7 +249,7 @@ export default class EditBroadcast extends React.Component {
                 ) : (
                   <Image
                     style={{ height: 100, width: 100 }}
-                    source={{ uri: this.state.video }}
+                    source={require("../../assets/default_broadcast.png")}
                   />
                 )}
               </TouchableOpacity>

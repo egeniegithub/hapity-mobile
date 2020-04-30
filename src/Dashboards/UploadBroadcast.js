@@ -18,7 +18,7 @@ import { Dialog } from "react-native-simple-dialogs";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { headerContainerStyle } from "../Config/Constants";
 import { requsetCameraPermissionAndroid } from "../Permissions/AndroidPermission";
-import Permissions from "react-native-permissions";
+import { check, PERMISSIONS, RESULTS, openSettings } from 'react-native-permissions';
 import AndroidOpenSettings from "react-native-android-open-settings";
 import { Icon } from "react-native-elements";
 import CustomAppHeader from "../Components/CustomAppHeader";
@@ -65,7 +65,7 @@ export default class UploadBroadcast extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     deviceMetaInfo().then(res => {
       this.setState({
         metaInfo: res
@@ -158,7 +158,7 @@ export default class UploadBroadcast extends React.Component {
     Alert.alert("Upload Broadcast", message, [
       {
         text: "OK",
-        onPress: () => {}
+        onPress: () => { }
       }
     ]);
   };
@@ -176,24 +176,37 @@ export default class UploadBroadcast extends React.Component {
         });
       }
     } else {
-      Permissions.check("photo").then(response => {
-        if (response == "authorized") {
-          callback(true);
-        } else if (response == "undetermined") {
-          callback(true);
-        } else {
-          Permissions.request("photo").then(response => {
-            if (response == "denied") {
+      check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+        .then((result) => {
+          switch (result) {
+            case RESULTS.UNAVAILABLE:
+              console.log(
+                'This feature is not available (on this device / in this context)',
+              );
+              alert("Could not get permission from device.");
+              callback(false);
+              break;
+            case RESULTS.DENIED:
+              console.log(
+                'The permission has not been requested / is denied but requestable',
+              );
+              callback(true);
+              break;
+            case RESULTS.GRANTED:
+              console.log('The permission is granted');
+              callback(true);
+              break;
+            case RESULTS.BLOCKED:
+              console.log('The permission is denied and not requestable anymore');
               this.setState({
                 goToSettings: true
               });
-            } else if (response == "restricted") {
-              alert("Could not get permission from device.");
-              callback(false);
-            }
-          });
-        }
-      });
+              break;          }
+        })
+        .catch((error) => {
+          console.log('Error : ', error);
+
+        });
     }
   };
 
@@ -235,12 +248,10 @@ export default class UploadBroadcast extends React.Component {
             if (Platform.OS === "android") {
               path = response.path;
             } else {
-              source = response.origURL;
               path = response.origURL;
             }
 
             this.setState({
-              video: source,
               videoPath: path
             });
           }
@@ -253,7 +264,7 @@ export default class UploadBroadcast extends React.Component {
     if (Platform.OS == "android") {
       AndroidOpenSettings.appDetailsSettings();
     } else {
-      Permissions.openSettings();
+      openSettings().catch(() => console.log('cannot open settings'));
     }
   };
 
@@ -279,14 +290,14 @@ export default class UploadBroadcast extends React.Component {
               }}
             />
           ) : (
-            <Header
-              centerComponent={{
-                text: "UPLOAD BROADCAST",
-                style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
-              }}
-              containerStyle={headerContainerStyle}
-            />
-          )}
+              <Header
+                centerComponent={{
+                  text: "UPLOAD BROADCAST",
+                  style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
+                }}
+                containerStyle={headerContainerStyle}
+              />
+            )}
           <Dialog
             visible={this.state.goToSettings}
             title="Enable Permissions!"
@@ -392,7 +403,7 @@ export default class UploadBroadcast extends React.Component {
             >
               <View style={{ width: 100, height: 130 }}>
                 <TouchableOpacity onPress={this._pickVideo}>
-                  {this.state.video == "" ? (
+                  {this.state.videoPath == "" ? (
                     <Image
                       style={{ height: 100, width: 100 }}
                       source={require("../../assets/upload_broadcast_video_holo.png")}
@@ -400,7 +411,7 @@ export default class UploadBroadcast extends React.Component {
                   ) : (
                     <Image
                       style={{ height: 100, width: 100 }}
-                      source={{ uri: this.state.video }}
+                      source={require("../../assets/default_broadcast.png")}
                     />
                   )}
                 </TouchableOpacity>
@@ -438,13 +449,13 @@ export default class UploadBroadcast extends React.Component {
                       source={require("../../assets/upload_broadcast_pic_holo.png")}
                     />
                   ) : (
-                    <Image
-                      style={{ height: 100, width: 100 }}
-                      source={{
-                        uri: "data:image/jpeg;base64," + this.state.picture
-                      }}
-                    />
-                  )}
+                      <Image
+                        style={{ height: 100, width: 100 }}
+                        source={{
+                          uri: "data:image/jpeg;base64," + this.state.picture
+                        }}
+                      />
+                    )}
                 </TouchableOpacity>
                 <View
                   style={[
@@ -480,7 +491,7 @@ export default class UploadBroadcast extends React.Component {
                 onPress={this.broadcastUpload}
               />
             </View>
-            <Text style={{marginVertical: 8, alignSelf:'center', fontSize: 18}}>4k videos are not supported.</Text>
+            <Text style={{ marginVertical: 8, alignSelf: 'center', fontSize: 18 }}>4k videos are not supported.</Text>
           </View>
         </KeyboardAwareScrollView>
 
