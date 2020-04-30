@@ -263,6 +263,8 @@ PODS:
     - React
   - react-native-camera/RN (3.23.1):
     - React
+  - react-native-cameraroll (1.5.2):
+    - React
   - react-native-fbsdk (1.1.2):
     - React
     - react-native-fbsdk/Core (= 1.1.2)
@@ -423,6 +425,7 @@ DEPENDENCIES:
   - react-native-ant-media-lib5 (from `../node_modules/react-native-ant-media-lib5`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-camera (from `../node_modules/react-native-camera`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -514,6 +517,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-timer"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-fbsdk:
     :path: "../node_modules/react-native-fbsdk"
   react-native-geolocation:
@@ -607,6 +612,7 @@ SPEC CHECKSUMS:
   react-native-ant-media-lib5: 7a8e9581683d492283d352a3ca8ec8d19c39bbd0
   react-native-background-timer: 53c0e028a95d58b1f4498ef7ce152b6c6b337595
   react-native-camera: 6fe72fd0a85732e2449928f9c59a2e0bf661ad3b
+  react-native-cameraroll: 81c6c271b5b853da398ccecc7ad6a5f765fd3001
   react-native-fbsdk: c35d42169e64aaf66f01713c1e18d0674f7f6519
   react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85

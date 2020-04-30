@@ -1,5 +1,5 @@
 import React from "react";
-import { CameraRoll, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import {
   getTwitterAuthTokenSecret,
   getTwitterAuthToken,
@@ -11,6 +11,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import RNFetchBlob from 'rn-fetch-blob';
 import DeviceInfo from 'react-native-device-info';
 import NetInfo from "@react-native-community/netinfo";
+import CameraRoll from "@react-native-community/cameraroll";
 
 const downloadSizeInBits = 30000000;
 const metric = 'MBps';

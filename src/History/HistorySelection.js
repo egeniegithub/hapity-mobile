@@ -9,9 +9,9 @@ import {
   FlatList,
   Dimensions,
   Alert,
-  CameraRoll,
   Platform
 } from "react-native";
+import CameraRoll from "@react-native-community/cameraroll";
 import { Header } from "react-native-elements";
 import Share from "react-native-share";
 import { StackActions, NavigationActions } from "react-navigation";
