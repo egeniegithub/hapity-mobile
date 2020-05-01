@@ -75,7 +75,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Let the other users know from where you are streaming.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Hapity uses microphone to speak in live broadcast.</string>
 	<key>NSMotionUsageDescription</key>
