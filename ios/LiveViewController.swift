@@ -6,21 +6,16 @@
 //
 
 import UIKit
+import WebRTC
+import AntMediaSDK
 
 
 class LiveViewController: UIViewController {
-
-
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
   
-
-    @IBAction func GoToReactNative(_ sender: UIButton) {
-        dismiss(animated: true)
-    }
     
+  
+  
+  override func viewWillAppear(_ animated: Bool) {
+              print("viewWillAppear")
+          }
 }

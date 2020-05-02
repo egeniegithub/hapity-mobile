@@ -4,7 +4,7 @@
 
 #import "React/RCTBridgeModule.h"
 @interface RCT_EXTERN_MODULE(LiveStream, NSObject)
-RCT_EXPORT_METHOD(changeToNativeView) {
+RCT_EXPORT_METHOD(startLiveStream) {
   dispatch_async(dispatch_get_main_queue(), ^(void) {
      AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
      [appDelegate goToNativeView];
