@@ -8,3 +8,12 @@
 import Foundation
 import WebRTC
 import AntMediaSDK
+
+@objc (LiveStream)
+class LiveStream: NSObject{
+  
+  @objc static func requiresMainQueueSetup() -> Bool {
+    return true
+  }
+  
+}

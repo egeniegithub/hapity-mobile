@@ -69,4 +69,11 @@
   [FBSDKAppEvents activateApp];
 }
 
+- (void) goToNativeView {
+  dispatch_async(dispatch_get_main_queue(), ^(void) {
+     UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;
+    [self.window.rootViewController presentViewController:vc animated:true completion:NULL];
+  });
+}
+
 @end

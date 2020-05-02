@@ -39,6 +39,8 @@
 		F1DA164D245C4C960083F694 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DA164C245C4C960083F694 /* WebRTC.framework */; };
 		F1DA164F245C4CA30083F694 /* AntMediaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DA164E245C4CA30083F694 /* AntMediaSDK.framework */; };
 		F1DA1650245C4CA30083F694 /* AntMediaSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F1DA164E245C4CA30083F694 /* AntMediaSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F1DA1654245C51590083F694 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1DA1653245C51590083F694 /* Main.storyboard */; };
+		F1DA1656245C595A0083F694 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA1655245C595A0083F694 /* LiveViewController.swift */; };
 		F555849FAFA74A1F8B389988 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3ADD58720BEE4F63AD03B177 /* FontAwesome.ttf */; };
 		FC588E43257A49F494443DC1 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 270DE3932E144B0694BF968A /* FontAwesome5_Regular.ttf */; };
 /* End PBXBuildFile section */
@@ -123,6 +125,8 @@
 		F1DA164C245C4C960083F694 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
 		F1DA164E245C4CA30083F694 /* AntMediaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AntMediaSDK.framework; path = ../../../../../Desktop/AntMediaSDK.framework; sourceTree = "<group>"; };
 		F1DA1651245C4CAD0083F694 /* AntMediaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AntMediaSDK.framework; sourceTree = "<group>"; };
+		F1DA1653245C51590083F694 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		F1DA1655245C595A0083F694 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		F2C2EAFDA3E1828FF86A10BC /* Pods-hapityApp-hapityAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hapityApp-hapityAppTests.release.xcconfig"; path = "Target Support Files/Pods-hapityApp-hapityAppTests/Pods-hapityApp-hapityAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		F7E5454A3AFC498EBFEF08D9 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -217,6 +221,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				F1DA1646245C4C6C0083F694 /* LiveStream.swift */,
 				F1DA1645245C4C6B0083F694 /* hapityApp-Bridging-Header.h */,
+				F1DA1653245C51590083F694 /* Main.storyboard */,
+				F1DA1655245C595A0083F694 /* LiveViewController.swift */,
 			);
 			name = hapityApp;
 			sourceTree = "<group>";
@@ -451,6 +457,7 @@
 				5630933BB7DE4669B58D4CED /* MaterialIcons.ttf in Resources */,
 				1BC3B3EB58274AA79316DD53 /* Octicons.ttf in Resources */,
 				162315E0586F43E7BDE63BD9 /* SimpleLineIcons.ttf in Resources */,
+				F1DA1654245C51590083F694 /* Main.storyboard in Resources */,
 				DAF02E739F0646D380F9519E /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -908,6 +915,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				F1DA1656245C595A0083F694 /* LiveViewController.swift in Sources */,
 				F1DA1647245C4C6C0083F694 /* LiveStream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1022,7 +1030,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = hapityApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1051,7 +1059,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = hapityApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
