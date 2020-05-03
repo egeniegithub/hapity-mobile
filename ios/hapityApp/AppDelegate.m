@@ -43,7 +43,9 @@
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
+  self.navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+  [[self navController] setNavigationBarHidden:YES animated:YES];
+  self.window.rootViewController = self.navController;
   [self.window makeKeyAndVisible];
 
   [[FBSDKApplicationDelegate sharedInstance] application:application
@@ -71,8 +73,11 @@
 
 - (void) goToNativeView {
   dispatch_async(dispatch_get_main_queue(), ^(void) {
-     UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;
-    [self.window.rootViewController presentViewController:vc animated:true completion:NULL];
+    UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;
+//    self.window.rootViewController = vc;
+    
+    UINavigationController *navVc=(UINavigationController *) self.window.rootViewController;
+    [navVc pushViewController: vc animated:YES];
   });
 }
 

@@ -25,7 +25,7 @@ class LiveViewController: UIViewController {
     
     alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {action in
       self.client.stop()
-      self.dismiss(animated: true)
+      self.navigationController?.popViewController(animated: true)
     }))
     alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
     
@@ -37,10 +37,8 @@ class LiveViewController: UIViewController {
     print("Switch camera clickedd.")
   }
   
-  
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     self.client.delegate = self
     self.client.setDebug(true)
     self.client.setOptions(url: "ws://34.255.219.25:5080/WebRTCAppEE/websocket", streamId: "ios1", token: "", mode: AntMediaClientMode.publish)
@@ -50,6 +48,10 @@ class LiveViewController: UIViewController {
     self.client.setLocalView(container: fullVideoView)
     self.client.start()
     startTimer()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
   }
   
   func startTimer(){

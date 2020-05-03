@@ -563,11 +563,12 @@ class LiveStreaming extends React.Component {
                         broadcastID: result.response.broadcast_id
                       },
                       () => {
-                        setTimeout(() => {
-                          this.setState({
-                            broadcastRuning: true
-                          });
-                        }, 200);
+                        this.getBroadCastView()
+                        // setTimeout(() => {
+                        //   this.setState({
+                        //     broadcastRuning: true
+                        //   });
+                        // }, 200);
                       }
                     );
                   }
@@ -636,7 +637,12 @@ class LiveStreaming extends React.Component {
   getBroadCastView = () => {
     const { keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera } = this.state;
     if (keyboardNotOpen) {
-      AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
+      if (Platform.OS == 'android') {
+        AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
+      }
+      else {
+        NativeModules.LiveStream.startLiveStream();
+      }
     }
   };
 
