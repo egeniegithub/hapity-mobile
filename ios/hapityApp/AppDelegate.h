@@ -5,6 +5,6 @@
 @property (strong, nonatomic) UINavigationController *navController;
 
 @property (nonatomic, strong) UIWindow *window;
-- (void) goToNativeView:(NSString*)name;
+- (void) goToNativeView:(NSString*)name isFrontCamera:(BOOL) camera;
 @end
 

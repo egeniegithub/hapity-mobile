@@ -56,7 +56,6 @@ export default class Login extends React.Component {
   }
 
   componentDidMount () {
-    NativeModules.LiveStream.startLiveStream("TestHere");
     deviceMetaInfo().then(res => {
       this.setState({
         metaInfo: res

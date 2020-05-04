@@ -11,7 +11,10 @@ import AntMediaSDK
 
 
 @objc class LiveViewController: UIViewController {
- @objc public var myValue:String  = ""
+  
+  @objc public var broadcastName:String  = ""
+  @objc public var isFrontCamera:Bool  = false
+  
   let client: AntMediaClient = AntMediaClient.init()
   var time = 0
   var timer = Timer()
@@ -39,13 +42,16 @@ import AntMediaSDK
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    print("P P P P P P P P P P P PP  : \(myValue)")
     self.client.delegate = self
     self.client.setDebug(true)
-    self.client.setOptions(url: "ws://34.255.219.25:5080/WebRTCAppEE/websocket", streamId: "ios1", token: "", mode: AntMediaClientMode.publish)
-    self.client.setCameraPosition(position: .back)
+    self.client.setOptions(url: "ws://34.255.219.25:5080/WebRTCAppEE/websocket", streamId: broadcastName, token: "", mode: AntMediaClientMode.publish)
+    if (isFrontCamera) {
+      self.client.setCameraPosition(position: .front)
+    } else {
+      self.client.setCameraPosition(position: .back)
+    }
+//    self.client.setCameraPosition(position: .front)
     self.client.setScaleMode(mode: .scaleAspectFill)
-    self.client.setTargetResolution(width: 480, height: 360)
     self.client.setLocalView(container: fullVideoView)
     self.client.start()
     startTimer()

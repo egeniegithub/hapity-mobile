@@ -641,7 +641,7 @@ class LiveStreaming extends React.Component {
         AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
       }
       else {
-        NativeModules.LiveStream.startLiveStream();
+        NativeModules.LiveStream.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
       }
     }
   };

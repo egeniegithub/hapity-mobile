@@ -71,12 +71,13 @@
   [FBSDKAppEvents activateApp];
 }
 
-- (void) goToNativeView:(NSString*)name {
+- (void) goToNativeView:(NSString*)name isFrontCamera:(BOOL) camera {
   dispatch_async(dispatch_get_main_queue(), ^(void) {
 //    UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LiveViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"VC"];
-    vc.myValue = @"Hello";
+    vc.broadcastName = name;
+    vc.isFrontCamera = camera;
     UINavigationController *navVc=(UINavigationController *) self.window.rootViewController;
     [navVc pushViewController: vc animated:YES];
   });
