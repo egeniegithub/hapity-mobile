@@ -10,8 +10,8 @@ import WebRTC
 import AntMediaSDK
 
 
-class LiveViewController: UIViewController {
-  
+@objc class LiveViewController: UIViewController {
+ @objc public var myValue:String  = ""
   let client: AntMediaClient = AntMediaClient.init()
   var time = 0
   var timer = Timer()
@@ -39,6 +39,7 @@ class LiveViewController: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    print("P P P P P P P P P P P PP  : \(myValue)")
     self.client.delegate = self
     self.client.setDebug(true)
     self.client.setOptions(url: "ws://34.255.219.25:5080/WebRTCAppEE/websocket", streamId: "ios1", token: "", mode: AntMediaClientMode.publish)

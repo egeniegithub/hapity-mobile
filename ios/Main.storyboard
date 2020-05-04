@@ -11,7 +11,7 @@
         <!--Live View Controller-->
         <scene sceneID="Jte-Eo-lvk">
             <objects>
-                <viewController id="drd-rb-39N" customClass="LiveViewController" customModule="Hapity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="drd-rb-39N" customClass="LiveViewController" customModule="Hapity" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7Ur-43-m1I">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -5,7 +5,7 @@
 #import <React/RCTRootView.h>
 #import <TwitterKit/TWTRKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-
+#import "Hapity-Swift.h"
 //#if DEBUG
 //#import <FlipperKit/FlipperClient.h>
 //#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -73,7 +73,10 @@
 
 - (void) goToNativeView:(NSString*)name {
   dispatch_async(dispatch_get_main_queue(), ^(void) {
-    UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;    
+//    UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LiveViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"VC"];
+    vc.myValue = @"Hello";
     UINavigationController *navVc=(UINavigationController *) self.window.rootViewController;
     [navVc pushViewController: vc animated:YES];
   });
