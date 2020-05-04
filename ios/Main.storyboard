@@ -23,7 +23,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3eF-7n-G7R">
                                 <rect key="frame" x="332" y="547" width="62" height="245"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="top" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wpr-qE-jum">
+                                    <button opaque="NO" alpha="0.40000000000000002" contentMode="top" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wpr-qE-jum">
                                         <rect key="frame" x="7.5" y="70" width="45" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="45" id="37E-O5-yeo"/>
@@ -32,7 +32,7 @@
                                         <inset key="imageEdgeInsets" minX="45" minY="45" maxX="45" maxY="45"/>
                                         <state key="normal" image="flash_on"/>
                                     </button>
-                                    <button opaque="NO" contentMode="top" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZAx-gn-VhD">
+                                    <button opaque="NO" alpha="0.40000000000000002" contentMode="top" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZAx-gn-VhD">
                                         <rect key="frame" x="7.5" y="15" width="45" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="hMu-56-s1x"/>
@@ -59,7 +59,7 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.3675418198" green="0.42657428980000001" blue="0.194217205" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="zXI-CP-frj" firstAttribute="centerX" secondItem="3eF-7n-G7R" secondAttribute="centerX" constant="-1" id="4sx-W8-aMX"/>
                                     <constraint firstAttribute="height" constant="245" id="MPc-2H-raG"/>
@@ -111,7 +111,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.56410223250000002" green="0.750926435" blue="0.28745305539999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="65" id="6si-NB-meZ"/>
                                 </constraints>
