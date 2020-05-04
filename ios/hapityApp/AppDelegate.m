@@ -71,11 +71,9 @@
   [FBSDKAppEvents activateApp];
 }
 
-- (void) goToNativeView {
+- (void) goToNativeView:(NSString*)name {
   dispatch_async(dispatch_get_main_queue(), ^(void) {
-    UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;
-//    self.window.rootViewController = vc;
-    
+    UIViewController *vc = [UIStoryboard storyboardWithName:@"Main" bundle:nil].instantiateInitialViewController;    
     UINavigationController *navVc=(UINavigationController *) self.window.rootViewController;
     [navVc pushViewController: vc animated:YES];
   });
