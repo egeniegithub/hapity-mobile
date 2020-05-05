@@ -28,6 +28,7 @@ import AntMediaSDK
     
     alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {action in
       self.client.stop()
+       ReactNativeEventEmitter.emitter.sendEvent(withName: "LiveStreamEvent", body: "Broadcast Stop.")
       self.navigationController?.popViewController(animated: true)
     }))
     alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))

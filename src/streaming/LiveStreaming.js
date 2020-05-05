@@ -11,7 +11,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  NativeEventEmitter
 } from "react-native";
 import { Header, Icon, Input } from "react-native-elements";
 // import BroadcastView from "react-native-wowza-gocoder";
@@ -101,6 +102,12 @@ class LiveStreaming extends React.Component {
   }
 
   componentDidMount() {
+    this.stopStreamNativeEvent = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
+    this.stopStreamNativeEvent.addListener(
+      'LiveStreamEvent', (res) => {
+        this.stopBroadcastAntGoToHistory();
+      }
+    )
     if (Platform.OS == "android") {
       this.androidPermission();
       this.keyboardDidHideListener = Keyboard.addListener(
@@ -699,6 +706,12 @@ class LiveStreaming extends React.Component {
   };
 
   enBroadcast = () => {
+    if (Platform.OS == 'android') {
+      this.stopBroadcastAntGoToHistory();
+    }
+  }
+
+  stopBroadcastAntGoToHistory = () => {
     getLoginSL().then(res => {
       stopBroadcast(
         res.user_info.token,

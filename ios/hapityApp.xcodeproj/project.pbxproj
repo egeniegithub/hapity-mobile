@@ -34,6 +34,8 @@
 		DAF02E739F0646D380F9519E /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F7E5454A3AFC498EBFEF08D9 /* Zocial.ttf */; };
 		DF8A41CFBF24436AA1E56D58 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A10F23E3012A49B7A2B6FFCC /* EvilIcons.ttf */; };
 		EA1614F3229843FC81F42DE4 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0CEEF53E1DC84161BE183900 /* Fontisto.ttf */; };
+		F166D10124619FF100342B03 /* ReactNativeEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F166D10024619FF100342B03 /* ReactNativeEventEmitter.swift */; };
+		F166D1032461A00800342B03 /* ReactNativeEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = F166D1022461A00800342B03 /* ReactNativeEventEmitter.m */; };
 		F1DA1647245C4C6C0083F694 /* LiveStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA1646245C4C6C0083F694 /* LiveStream.swift */; };
 		F1DA164A245C4C7F0083F694 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F1DA1648245C4C7F0083F694 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F1DA164D245C4C960083F694 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DA164C245C4C960083F694 /* WebRTC.framework */; };
@@ -119,6 +121,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F12255B781ED4E8693D4AA47 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		F166D10024619FF100342B03 /* ReactNativeEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeEventEmitter.swift; sourceTree = "<group>"; };
+		F166D1022461A00800342B03 /* ReactNativeEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeEventEmitter.m; sourceTree = "<group>"; };
 		F1DA1645245C4C6B0083F694 /* hapityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "hapityApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		F1DA1646245C4C6C0083F694 /* LiveStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStream.swift; sourceTree = "<group>"; };
 		F1DA1648245C4C7F0083F694 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = ../../../../../Downloads/WebRTCiOSSDK/WebRTC.framework; sourceTree = "<group>"; };
@@ -223,6 +227,8 @@
 				F1DA1645245C4C6B0083F694 /* hapityApp-Bridging-Header.h */,
 				F1DA1653245C51590083F694 /* Main.storyboard */,
 				F1DA1655245C595A0083F694 /* LiveViewController.swift */,
+				F166D10024619FF100342B03 /* ReactNativeEventEmitter.swift */,
+				F166D1022461A00800342B03 /* ReactNativeEventEmitter.m */,
 			);
 			name = hapityApp;
 			sourceTree = "<group>";
@@ -931,9 +937,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F166D1032461A00800342B03 /* ReactNativeEventEmitter.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				F1DA1656245C595A0083F694 /* LiveViewController.swift in Sources */,
+				F166D10124619FF100342B03 /* ReactNativeEventEmitter.swift in Sources */,
 				F1DA1647245C4C6C0083F694 /* LiveStream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
