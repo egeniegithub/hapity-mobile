@@ -417,6 +417,7 @@ export const startBroadcastUrl = async (
     post_plugin: post_plugin,
     image: image,
     meta_info: meta_info,
+    is_antmedia:"yes"
   };
   let request = {
     method: "POST",
