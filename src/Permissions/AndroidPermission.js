@@ -40,3 +40,21 @@ export const requsetCameraPermissionAndroid = async () => {
     console.log("requsetLocationPermission Error: ", err);
   }
 };
+
+
+export const requestWriteToStorage = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+    );
+    if (granted == "granted") {
+      return true;
+    } else if (granted == "denied") {
+      return undefined; // because i don't want to show my custom permission check..
+    } else if (granted == "never_ask_again") {
+      return false;
+    }
+  } catch (err) {
+    console.log("requsetLocationPermission Error: ", err);
+  }
+};

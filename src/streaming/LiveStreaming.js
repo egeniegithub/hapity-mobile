@@ -102,12 +102,6 @@ class LiveStreaming extends React.Component {
   }
 
   componentDidMount() {
-    this.stopStreamNativeEvent = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
-    this.stopStreamNativeEvent.addListener(
-      'LiveStreamEvent', (res) => {
-        this.stopBroadcastAntGoToHistory();
-      }
-    )
     if (Platform.OS == "android") {
       this.androidPermission();
       this.keyboardDidHideListener = Keyboard.addListener(
@@ -128,6 +122,13 @@ class LiveStreaming extends React.Component {
       //   });
       // });
     } else {
+      // stop live stream from ios native event
+        this.stopStreamNativeEvent = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
+        this.stopStreamNativeEvent.addListener(
+        'LiveStreamEvent', (res) => {
+        this.stopBroadcastAntGoToHistory();
+      }
+    )
       this.iosPermission();
     }
     getTwitterSharing().then(res => {
@@ -705,7 +706,16 @@ class LiveStreaming extends React.Component {
     }
   };
 
-  enBroadcast = () => {
+  enBroadcast = async () => {
+    let data = await getListOfBroadcastToDownload();
+    if (data === null || data === undefined) {
+      let singleData = [];
+      singleData.push(this.state.broadcastStreamName);
+      await setListOfBroadcastToDownload(JSON.stringify(singleData));
+    } else {
+      data.push(this.state.broadcastStreamName);
+      await setListOfBroadcastToDownload(JSON.stringify(data));
+    }
     if (Platform.OS == 'android') {
       this.stopBroadcastAntGoToHistory();
     }

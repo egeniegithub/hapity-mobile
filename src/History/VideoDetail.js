@@ -19,6 +19,7 @@ import { ProgressDialog, Dialog } from "react-native-simple-dialogs";
 import { headerContainerStyle } from "../Config/Constants";
 import * as Progress from "react-native-progress";
 import CustomAppHeader from "../Components/CustomAppHeader";
+import { requestWriteToStorage } from "../Permissions/AndroidPermission";
 
 const colors = require("../Theme/Color");
 
@@ -120,11 +121,25 @@ export default class VideoDetail extends React.Component {
     };
 
     Share.open(options)
-      .then(res => {})
-      .catch(err => {});
+      .then(res => { })
+      .catch(err => { });
   };
 
-  downloadVideo = () => {
+  downloadVideo = async () => {
+    if (Platform.OS == 'android') {
+      let granted = await requestWriteToStorage();
+      if (granted) {
+        this.downloadAndSaveToCamera()
+      } else {
+        alert("Allow permissions from app settings.")
+      }
+    }
+    else {
+      this.downloadAndSaveToCamera()
+    }
+  };
+
+  downloadAndSaveToCamera = () => {
     this.setState({ downloadVideoDialog: true }, () => {
       videoDownload(
         this.state.fileName,
@@ -159,7 +174,7 @@ export default class VideoDetail extends React.Component {
         }
       );
     });
-  };
+  }
 
   render() {
     return (
@@ -173,15 +188,15 @@ export default class VideoDetail extends React.Component {
             }}
           />
         ) : (
-          <Header
-            centerComponent={{
-              text: "Detail",
-              style: { color: "#fff", fontSize: 20, fontWeight: "bold" }
-            }}
-            containerStyle={headerContainerStyle}
-            leftComponent={this.leftArrowGoBack}
-          />
-        )}
+            <Header
+              centerComponent={{
+                text: "Detail",
+                style: { color: "#fff", fontSize: 20, fontWeight: "bold" }
+              }}
+              containerStyle={headerContainerStyle}
+              leftComponent={this.leftArrowGoBack}
+            />
+          )}
         <ProgressDialog
           visible={this.state.showProgressDialog}
           title="Delete Broadcast"
@@ -228,15 +243,15 @@ export default class VideoDetail extends React.Component {
                 resizeMode="contain"
               />
             ) : (
-              <Image
-                style={{
-                  width: "100%",
-                  height: Dimensions.get("window").height / 1.4
-                }}
-                source={{ uri: this.state.broadcastImage }}
-                resizeMode="contain"
-              />
-            )}
+                <Image
+                  style={{
+                    width: "100%",
+                    height: Dimensions.get("window").height / 1.4
+                  }}
+                  source={{ uri: this.state.broadcastImage }}
+                  resizeMode="contain"
+                />
+              )}
 
             {this.state.streamUrl != "" ? (
               <TouchableOpacity
@@ -269,8 +284,8 @@ export default class VideoDetail extends React.Component {
               />
             </TouchableOpacity>
           ) : (
-            <View></View>
-          )}
+              <View></View>
+            )}
 
           <TouchableOpacity onPress={this.broadcastDelete}>
             <Image
