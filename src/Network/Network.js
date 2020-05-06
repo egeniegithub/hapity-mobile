@@ -38,7 +38,7 @@ export const doLogin = async (email, password, meta_info, callback) => {
     body: JSON.stringify(params)
   };
 
-  processNetworkRequest(ApiName.login, request, callback, 15000);
+  processNetworkRequest(ApiName.login, request, callback, 30000);
 };
 
 export const doSignUp = async (
@@ -66,7 +66,7 @@ export const doSignUp = async (
     body: JSON.stringify(params)
   };
 
-  processNetworkRequest(ApiName.signUp, request, callback, 10000);
+  processNetworkRequest(ApiName.signUp, request, callback, 30000);
 };
 
 export const loginWithTwitter = async (
@@ -135,7 +135,7 @@ export const getAllBroadcastsForUser = async (token, user_id, callback) => {
     },
     body: JSON.stringify(params)
   };
-  processNetworkRequest(ApiName.broadcastsForUser, request, callback, 10000);
+  processNetworkRequest(ApiName.broadcastsForUser, request, callback, 30000);
 };
 
 export const deleteBroadcast = async (
@@ -159,7 +159,7 @@ export const deleteBroadcast = async (
     },
     body: JSON.stringify(params)
   };
-  processNetworkRequest(ApiName.deleteBroadcast, request, callback, 10000);
+  processNetworkRequest(ApiName.deleteBroadcast, request, callback, 30000);
 };
 
 export const editBroadcast = async (
@@ -298,7 +298,7 @@ export const getProfileInfo = async (token, callback) => {
       Authorization: "Bearer " + token
     }
   };
-  processNetworkRequest(ApiName.getProfileInfo, request, callback, 10000);
+  processNetworkRequest(ApiName.getProfileInfo, request, callback, 30000);
 };
 
 export const timeStampBroadcastUrl = async (token, broadcast_id, callback) => {
@@ -319,7 +319,7 @@ export const timeStampBroadcastUrl = async (token, broadcast_id, callback) => {
     ApiName.timeStampBroadcastUrl,
     request,
     callback,
-    10000
+    30000
   );
 };
 
@@ -337,7 +337,7 @@ export const stopBroadcast = async (token, broadcast_id, callback) => {
     },
     body: JSON.stringify(params)
   };
-  processNetworkRequest(ApiName.stopBroadcast, request, callback, 10000);
+  processNetworkRequest(ApiName.stopBroadcast, request, callback, 30000);
 };
 
 export const editProfile = async (
@@ -367,7 +367,7 @@ export const editProfile = async (
     body: JSON.stringify(params)
   };
 
-  processNetworkRequest(ApiName.editProfile, request, callback, 20000);
+  processNetworkRequest(ApiName.editProfile, request, callback, 30000);
 };
 
 export const videoDownload = async (stream_url, callback, progressCallback) => {
@@ -428,7 +428,7 @@ export const startBroadcastUrl = async (
     },
     body: JSON.stringify(params)
   };
-  processNetworkRequest(ApiName.startBroadcastUrl, request, callback, 20000);
+  processNetworkRequest(ApiName.startBroadcastUrl, request, callback, 30000);
 };
 
 function processNetworkRequest(url, request, callback, TIME_OUT) {
