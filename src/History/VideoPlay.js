@@ -17,6 +17,7 @@ import KeepAwake from "react-native-keep-awake";
 import CustomAppHeader from "../Components/CustomAppHeader";
 import { WebView } from 'react-native-webview';
 let colors = require("../Theme/Color");
+import AlertPro from "react-native-alert-pro";
 
 export default class VideoPlay extends React.Component {
   constructor(props) {
@@ -44,20 +45,20 @@ export default class VideoPlay extends React.Component {
     );
   };
 
-  onEndBroadcast = () => {
-    Alert.alert("Alert", "Broadcast End", [
-      {
-        text: "OK",
-        onPress: () => {
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "History" })]
-          });
-          this.props.navigation.dispatch(resetAction);
-        }
-      }
-    ]);
-  };
+  // onEndBroadcast = () => {
+  //   Alert.alert("Alert", "Broadcast End", [
+  //     {
+  //       text: "OK",
+  //       onPress: () => {
+  //         const resetAction = StackActions.reset({
+  //           index: 0,
+  //           actions: [NavigationActions.navigate({ routeName: "History" })]
+  //         });
+  //         this.props.navigation.dispatch(resetAction);
+  //       }
+  //     }
+  //   ]);
+  // };
 
   corruptedVideo = () => {
     this.setState(
@@ -81,10 +82,45 @@ export default class VideoPlay extends React.Component {
     );
   };
 
+  closeDialogAndGoToHistory = () => {
+    this.AlertPro.close();
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "History" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <KeepAwake />
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          onConfirm={this.closeDialogAndGoToHistory}
+          title="Finished!"
+          message="Broadcast has Ended."
+          textConfirm="OK"
+          showCancel={false}
+          customStyles={{
+            mask: {
+              backgroundColor: "transparent"
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#9900cc",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius: 5
+            },
+            buttonConfirm: {
+              backgroundColor: colors.colorPrimary
+            }
+          }}
+        />
         {Platform.OS === "android" ? (
           <CustomAppHeader
             leftComponent={this.leftArrowGoBack}
@@ -134,8 +170,17 @@ export default class VideoPlay extends React.Component {
                 shouldPlay
                 isLooping={false}
                 controls={true}
-                onEnd={this.onEndBroadcast}
+                onEnd={() => {
+                  this.setState(
+                    {
+                      videoBuffering: false
+                    },() => {
+                      this.AlertPro.open()
+                    })
+                  }}
+                // onEnd={this.onEndBroadcast}
                 onBuffer={() => this.setState({ videoBuffering: false })}
+                onLoad={() => this.setState({ videoBuffering: false })}
                 onError={this.corruptedVideo}
                 style={{
                   height: Dimensions.get("window").height / 1.2,
