@@ -19,7 +19,8 @@ import CustomAppHeader from "../Components/CustomAppHeader";
 import { downloadPendingStream } from '../Config/Function';
 import BackgroundTimer from 'react-native-background-timer';
 import { requsetCameraPermissionAndroid } from "../Permissions/AndroidPermission";
-
+import AlertPro from "react-native-alert-pro";
+import Styles from '../Theme/Styles';
 const colors = require("../Theme/Color");
 
 export default class History extends React.Component {
@@ -27,27 +28,29 @@ export default class History extends React.Component {
     super(props);
     this.state = {
       loadingBroadcasts: false,
-      allBroadcasts: []
+      allBroadcasts: [],
+      streamUrl: '',
+      streamId: '',
     };
   }
 
   async componentDidMount() {
     if (Platform.OS === 'android') {
 
-        let granted = await requsetCameraPermissionAndroid();
-        console.log('Permission Granted : ' , granted);
-        if (granted) {
-          const timeoutId = BackgroundTimer.setTimeout(() => {
-            getVideoDownloadLocally().then(res => {
-              console.log('getVideoDownloadLocally : ', res);
-              if (res !== null && res === 'true') {
-                downloadPendingStream(timeoutId);
-              } else {
-                BackgroundTimer.clearTimeout(timeoutId);
-              }
-            })
-          }, 3000);
-        }
+      let granted = await requsetCameraPermissionAndroid();
+      console.log('Permission Granted : ', granted);
+      if (granted) {
+        const timeoutId = BackgroundTimer.setTimeout(() => {
+          getVideoDownloadLocally().then(res => {
+            console.log('getVideoDownloadLocally : ', res);
+            if (res !== null && res === 'true') {
+              downloadPendingStream(timeoutId);
+            } else {
+              BackgroundTimer.clearTimeout(timeoutId);
+            }
+          })
+        }, 3000);
+      }
     }
     else {
       BackgroundTimer.stop();
@@ -91,19 +94,12 @@ export default class History extends React.Component {
   };
 
   broadcastDelete = (id, stream_url) => {
-    Alert.alert(
-      "Delete Broadcast",
-      "Are you sure you want to delete this broadcast?",
-      [
-        {
-          text: "Yes",
-          onPress: () => {
-            this.deleteBroadcastFromServer(id, stream_url);
-          }
-        },
-        { text: "NO" }
-      ]
-    );
+    this.setState({
+      streamId: id,
+      streamUrl: stream_url,
+    }, () => {
+      this.AlertPro.open();
+    });
   };
 
   deleteBroadcastFromServer = (id, stream_url) => {
@@ -276,8 +272,26 @@ export default class History extends React.Component {
   };
 
   render() {
+    const { streamId, streamUrl } = this.state;
     return (
       <View style={styles.mainContainer}>
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          title="Delete Broadcast"
+          message="Are you sure you want to delete this broadcast?"
+          textConfirm="Yes"
+          textCancel="No"
+          customStyles={
+            Styles.alertStyle
+          }
+          onConfirm={() => {
+            this.AlertPro.close();
+            this.deleteBroadcastFromServer(streamId, streamUrl)
+          }}
+          onCancel={() => this.AlertPro.close()}
+        />
         {Platform.OS === "android" ? (
           <CustomAppHeader
             leftComponent={() => {

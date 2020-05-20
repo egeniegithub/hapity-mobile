@@ -23,6 +23,8 @@ import AndroidOpenSettings from "react-native-android-open-settings";
 import { Icon } from "react-native-elements";
 import CustomAppHeader from "../Components/CustomAppHeader";
 import { deviceMetaInfo } from '../Config/Function';
+import AlertPro from "react-native-alert-pro";
+import Styles from '../Theme/Styles';
 
 import * as Progress from "react-native-progress";
 
@@ -62,6 +64,7 @@ export default class UploadBroadcast extends React.Component {
       uploadVideoShowDialog: false,
       goToSettings: false,
       metaInfo: {},
+      uploadErrorMessage: ""
     };
   }
 
@@ -125,7 +128,7 @@ export default class UploadBroadcast extends React.Component {
                   () => {
                     setTimeout(() => {
                       this.goToHistoryAfterUpload();
-                    }, 200);
+                    }, 100);
                   }
                 );
               }
@@ -140,27 +143,15 @@ export default class UploadBroadcast extends React.Component {
   };
 
   goToHistoryAfterUpload = () => {
-    Alert.alert("Upload Broadcast", "Broadcast Uploaded Successfully", [
-      {
-        text: "OK",
-        onPress: () => {
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "History" })]
-          });
-          this.props.navigation.dispatch(resetAction);
-        }
-      }
-    ]);
+    this.AlertPro.open();
   };
 
   goToHistoryAfterUploadFailed = message => {
-    Alert.alert("Upload Broadcast", message, [
-      {
-        text: "OK",
-        onPress: () => { }
-      }
-    ]);
+    this.setState({
+      uploadErrorMessage: message
+    }, () => {
+      this.UploadError.open()
+    })
   };
 
   handleGalleryPermission = async callback => {
@@ -201,7 +192,8 @@ export default class UploadBroadcast extends React.Component {
               this.setState({
                 goToSettings: true
               });
-              break;          }
+              break;
+          }
         })
         .catch((error) => {
           console.log('Error : ', error);
@@ -269,6 +261,7 @@ export default class UploadBroadcast extends React.Component {
   };
 
   render() {
+    const {uploadErrorMessage} = this.state;
     let settingNameForPermission = "";
     if (Platform.OS == "android") {
       settingNameForPermission = "storage";
@@ -278,6 +271,42 @@ export default class UploadBroadcast extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          title="Upload Broadcast"
+          message="Broadcast Uploaded Successfully."
+          textConfirm="OK"
+          showCancel={false}
+          customStyles={
+            Styles.alertStyle
+          }
+          onConfirm={() => {
+            this.AlertPro.close();
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: "History" })]
+            });
+            this.props.navigation.dispatch(resetAction);
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.UploadError = ref;
+          }}
+          title="Upload Broadcast"
+          message={uploadErrorMessage}
+          textConfirm="OK"
+          showCancel={false}
+          customStyles={
+            Styles.alertStyle
+          }
+          onConfirm={() => {
+            this.UploadError.close();
+          }}
+        />
         <KeyboardAwareScrollView>
           {Platform.OS === "android" ? (
             <CustomAppHeader
@@ -409,11 +438,11 @@ export default class UploadBroadcast extends React.Component {
                       source={require("../../assets/upload_broadcast_video_holo.png")}
                     />
                   ) : (
-                    <Image
-                      style={{ height: 100, width: 100 }}
-                      source={require("../../assets/default_broadcast.png")}
-                    />
-                  )}
+                      <Image
+                        style={{ height: 100, width: 100 }}
+                        source={require("../../assets/default_broadcast.png")}
+                      />
+                    )}
                 </TouchableOpacity>
                 <View
                   style={[
