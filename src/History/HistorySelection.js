@@ -21,7 +21,8 @@ import { ProgressDialog, Dialog } from "react-native-simple-dialogs";
 import * as Progress from "react-native-progress";
 import { headerContainerStyle } from "../Config/Constants";
 import CustomAppHeader from "../Components/CustomAppHeader";
-
+import AlertPro from "react-native-alert-pro";
+import Styles from '../Theme/Styles';
 const colors = require("../Theme/Color");
 
 export default class HistorySelection extends React.Component {
@@ -72,42 +73,34 @@ export default class HistorySelection extends React.Component {
     }
 
     if (selectedBroadcast) {
-      Alert.alert(
-        "Delete Broadcasts",
-        "Are you sure you want to delete selected broadcasts?",
-        [
-          {
-            text: "Yes",
-            onPress: () => {
-              this.setState({ showProgressDialog: true });
-              let numberOfBroadcast = this.state.allBroadcasts.length;
-              for (i = 0; i < numberOfBroadcast; i++) {
-                if (this.state.allBroadcasts[i].isSelect) {
-                  this.deleteBroadcastFromServer(
-                    this.state.allBroadcasts[i].id,
-                    this.state.allBroadcasts[i].stream_url
-                  );
-                }
-              }
-
-              this.setState({ showProgressDialog: false }, () => {
-                const resetAction = StackActions.reset({
-                  index: 0,
-                  actions: [
-                    NavigationActions.navigate({ routeName: "History" })
-                  ]
-                });
-                this.props.navigation.dispatch(resetAction);
-              });
-            }
-          },
-          { text: "NO" }
-        ]
-      );
+      this.DeleteBroadcastAlert.open();
     } else {
-      alert("Please select any video.");
+      this.normalAlert.open();
     }
   };
+
+  deleteVideosAndGoToHistory = () => {
+    this.setState({ showProgressDialog: true });
+    let numberOfBroadcast = this.state.allBroadcasts.length;
+    for (i = 0; i < numberOfBroadcast; i++) {
+      if (this.state.allBroadcasts[i].isSelect) {
+        this.deleteBroadcastFromServer(
+          this.state.allBroadcasts[i].id,
+          this.state.allBroadcasts[i].stream_url
+        );
+      }
+    }
+
+    this.setState({ showProgressDialog: false }, () => {
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: "History" })
+        ]
+      });
+      this.props.navigation.dispatch(resetAction);
+    });
+  }
 
   deleteBroadcastFromServer = (id, stream_url) => {
     // get user credential from local storage
@@ -118,7 +111,7 @@ export default class HistorySelection extends React.Component {
         res.user_info.user_id,
         stream_url,
         id,
-        result => {}
+        result => { }
       );
     });
   };
@@ -146,10 +139,10 @@ export default class HistorySelection extends React.Component {
 
     if (urlVideo != "") {
       Share.open(options)
-        .then(res => {})
-        .catch(err => {});
+        .then(res => { })
+        .catch(err => { });
     } else {
-      alert("Please select any video.");
+      this.normalAlert.open();
     }
   };
 
@@ -173,7 +166,7 @@ export default class HistorySelection extends React.Component {
     if (this.filesToDownload.length != 0) {
       this.downloadVideoFromServer();
     } else {
-      alert("Please select any video.");
+      this.normalAlert.open();
     }
   };
 
@@ -229,25 +222,25 @@ export default class HistorySelection extends React.Component {
               style={{ width: this.imageWidth, height: this.imageHeight }}
             />
           ) : (
-            <View>
-              <Image
-                source={{ uri: item.broadcast_image }}
-                style={{ width: this.imageWidth, height: this.imageHeight }}
-              />
-              <View
-                style={{
-                  position: "absolute",
-                  top: this.playIconTop,
-                  left: this.playIconLeft
-                }}
-              >
+              <View>
                 <Image
-                  source={require("../../assets/play_video.png")}
-                  style={{ width: 30, height: 30 }}
+                  source={{ uri: item.broadcast_image }}
+                  style={{ width: this.imageWidth, height: this.imageHeight }}
                 />
+                <View
+                  style={{
+                    position: "absolute",
+                    top: this.playIconTop,
+                    left: this.playIconLeft
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/play_video.png")}
+                    style={{ width: 30, height: 30 }}
+                  />
+                </View>
               </View>
-            </View>
-          )}
+            )}
         </TouchableOpacity>
       </View>
     );
@@ -256,6 +249,39 @@ export default class HistorySelection extends React.Component {
   render() {
     return (
       <View style={styles.mainContainer}>
+        <AlertPro
+          ref={ref => {
+            this.DeleteBroadcastAlert = ref;
+          }}
+          title="Delete Broadcasts"
+          message="Are you sure you want to delete selected broadcasts?"
+          textConfirm="Yes"
+          textCancel="No"
+          customStyles={
+            Styles.alertStyle
+          }
+          onConfirm={() => {
+            this.DeleteBroadcastAlert.close();
+            this.deleteVideosAndGoToHistory();
+          }}
+          onCancel={() => this.DeleteBroadcastAlert.close()}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.normalAlert = ref;
+          }}
+          title="Alert!"
+          message="   Please select any video.   "
+          textConfirm="OK"
+          showCancel={false}
+          customStyles={
+            Styles.alertStyle
+          }
+          onConfirm={() => {
+            this.normalAlert.close();
+          }}
+        />
         {Platform.OS === "android" ? (
           <CustomAppHeader
             leftComponent={this.leftArrowGoBack}
@@ -265,15 +291,15 @@ export default class HistorySelection extends React.Component {
             }}
           />
         ) : (
-          <Header
-            centerComponent={{
-              text: "HISTORY SELECTION",
-              style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
-            }}
-            containerStyle={headerContainerStyle}
-            leftComponent={this.leftArrowGoBack}
-          />
-        )}
+            <Header
+              centerComponent={{
+                text: "HISTORY SELECTION",
+                style: { color: "#fff", fontSize: 18, fontWeight: "bold" }
+              }}
+              containerStyle={headerContainerStyle}
+              leftComponent={this.leftArrowGoBack}
+            />
+          )}
 
         <ProgressDialog
           visible={this.state.showProgressDialog}
