@@ -45,7 +45,7 @@ import AntMediaSDK
     super.viewDidAppear(animated)
     self.client.delegate = self
     self.client.setDebug(true)
-    self.client.setOptions(url: "ws://34.255.219.25:5080/WebRTCAppEE/websocket", streamId: broadcastName, token: "", mode: AntMediaClientMode.publish)
+    self.client.setOptions(url: "wss://antmedia.hapity.com:5443/WebRTCAppEE/websocket", streamId: broadcastName, token: "", mode: AntMediaClientMode.publish)
     if (isFrontCamera) {
       self.client.setCameraPosition(position: .front)
     } else {
