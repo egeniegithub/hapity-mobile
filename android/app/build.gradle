@@ -135,7 +135,7 @@ android {
         applicationId "com.app.hapity"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 65
+        versionCode 67
         versionName "5.3"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true // to just resolve multidex error
@@ -174,7 +174,6 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
             signingConfig signingConfigs.release
-            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
