@@ -38,7 +38,7 @@ import WebRTCiOSSDK
   
   
   @IBAction func btnSwitchCamera(_ sender: UIButton) {
-    print("Switch camera clickedd.")
+    self.client.switchCamera()
   }
   
   override func viewDidAppear(_ animated: Bool) {
