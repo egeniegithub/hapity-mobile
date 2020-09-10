@@ -7,7 +7,7 @@
 
 import UIKit
 import WebRTC
-import AntMediaSDK
+import WebRTCiOSSDK
 
 
 @objc class LiveViewController: UIViewController {
@@ -52,7 +52,7 @@ import AntMediaSDK
       self.client.setCameraPosition(position: .back)
     }
 //    self.client.setCameraPosition(position: .front)
-    self.client.setScaleMode(mode: .scaleAspectFill)
+//    self.client.setScaleMode(mode: .scaleAspectFill)
     self.client.setLocalView(container: fullVideoView)
     self.client.start()
     startTimer()
@@ -96,6 +96,10 @@ import AntMediaSDK
 }
 
 extension LiveViewController: AntMediaClientDelegate {
+  func dataReceivedFromDataChannel(streamId: String, data: Data, binary: Bool) {
+    
+  }
+  
   
   func clientDidConnect(_ client: AntMediaClient) {
     print("VideoViewController: Connected")

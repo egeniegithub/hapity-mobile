@@ -7,7 +7,7 @@
 
 import Foundation
 import WebRTC
-import AntMediaSDK
+import WebRTCiOSSDK
 
 @objc (LiveStream)
 class LiveStream: NSObject{

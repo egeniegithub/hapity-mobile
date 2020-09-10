@@ -4,206 +4,206 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/AntMediaSDK-Swift.h</key>
+		<key>Headers/WebRTCiOSSDK-Swift.h</key>
 		<data>
-		4pdMb3qkaDh43QnJIisJXuJXsXs=
+		N7Wi3HUCe1mj6+sw2YO5SyphRnI=
 		</data>
-		<key>Headers/AntMediaSDK.h</key>
+		<key>Headers/WebRTCiOSSDK.h</key>
 		<data>
-		7jZwgjXXdJ5yoNWHKD5WRJvJ96g=
+		W43/JKuo8z2ozkn+aix3qizvlk0=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		uDK9KHSYart9af+OYSxqs1JXUzQ=
+		IAb3+v2JN67Opu1n2mCYhclb9lA=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/arm.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm.swiftdoc</key>
 		<data>
-		Wx6jRI3QFZGQ1IN1bc0OARAi61E=
+		VL6bqLQD7RwRBQSZcxp47PD27VE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/arm.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm.swiftmodule</key>
 		<data>
-		qHzL6lNM7iJlpYRZqqPXJbsIbHY=
+		CKrHRv0zJA2HNxEwE4HCnHKjpfE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		ggMcOY1wlAJy8urCmNXOxHlqkCg=
+		wli8sBFqRqio1btqlEY0prnJJpc=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		ktqmtN1H6G0PlsVgpc1jZKDV+rw=
+		/dbJiZJwKmWgp75HpAGR7c0DLfE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		ggMcOY1wlAJy8urCmNXOxHlqkCg=
+		wli8sBFqRqio1btqlEY0prnJJpc=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		ktqmtN1H6G0PlsVgpc1jZKDV+rw=
+		/dbJiZJwKmWgp75HpAGR7c0DLfE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7-apple-ios.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7-apple-ios.swiftdoc</key>
 		<data>
-		Wx6jRI3QFZGQ1IN1bc0OARAi61E=
+		VL6bqLQD7RwRBQSZcxp47PD27VE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7-apple-ios.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7-apple-ios.swiftmodule</key>
 		<data>
-		qHzL6lNM7iJlpYRZqqPXJbsIbHY=
+		CKrHRv0zJA2HNxEwE4HCnHKjpfE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7.swiftdoc</key>
 		<data>
-		Wx6jRI3QFZGQ1IN1bc0OARAi61E=
+		VL6bqLQD7RwRBQSZcxp47PD27VE=
 		</data>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7.swiftmodule</key>
 		<data>
-		qHzL6lNM7iJlpYRZqqPXJbsIbHY=
+		CKrHRv0zJA2HNxEwE4HCnHKjpfE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		gTaCCma3aROXQW9QIx4oatnAzaU=
+		2oJ5+by+HKc9ONe63AW3gTitMjU=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/AntMediaSDK-Swift.h</key>
+		<key>Headers/WebRTCiOSSDK-Swift.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			4pdMb3qkaDh43QnJIisJXuJXsXs=
+			N7Wi3HUCe1mj6+sw2YO5SyphRnI=
 			</data>
 			<key>hash2</key>
 			<data>
-			4UcpQ3/icnMTN2mWXkrMN4zEIcVxyzuIpjI53JKWLBI=
+			CcSyhJHexqFkX72jUPVqNFqw564z2vceRUVz42M+iaA=
 			</data>
 		</dict>
-		<key>Headers/AntMediaSDK.h</key>
+		<key>Headers/WebRTCiOSSDK.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			7jZwgjXXdJ5yoNWHKD5WRJvJ96g=
+			W43/JKuo8z2ozkn+aix3qizvlk0=
 			</data>
 			<key>hash2</key>
 			<data>
-			+E11bxokd6BgR+ulgbl1/+JurkwxT/0igxVAjxtFBJk=
+			tDFVKmTR4wcY0waN2/xFozgyJWA2ZAF0J1oQ36o57Vs=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/arm.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Wx6jRI3QFZGQ1IN1bc0OARAi61E=
+			VL6bqLQD7RwRBQSZcxp47PD27VE=
 			</data>
 			<key>hash2</key>
 			<data>
-			mmJndTJYTz7Jtt/q1GE9XgWWXx44PETgtM5cMx1bmO0=
+			Zr77fVhsSXFw/N+Tt8wQPHHmuxJRgWwRtv1rPEw39Z0=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/arm.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			qHzL6lNM7iJlpYRZqqPXJbsIbHY=
+			CKrHRv0zJA2HNxEwE4HCnHKjpfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			JLUyThTf4Et1Hm1EmrpHxmDIF83cOoA12M2HVk3phJM=
+			prIBiq3PubI8wW4AqA7/IImeFC4nQGqtMawmg7aZ/Yw=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ggMcOY1wlAJy8urCmNXOxHlqkCg=
+			wli8sBFqRqio1btqlEY0prnJJpc=
 			</data>
 			<key>hash2</key>
 			<data>
-			5xV2c60T0KnOvj8njrilaoTfP/4lh168xqesgbzMyZk=
+			2Zs09DZ/PAcSew6lrCloTB+roDfWxp52GBpiXI488LI=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ktqmtN1H6G0PlsVgpc1jZKDV+rw=
+			/dbJiZJwKmWgp75HpAGR7c0DLfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			kTcKUqIhRgdY+1VW/BMe+PbpWCJd02jPfHnWs0TzGVc=
+			xiUbh1bjeyv21ShPWW+Y2A23IQ1Z1Zie/qGvIboji5A=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ggMcOY1wlAJy8urCmNXOxHlqkCg=
+			wli8sBFqRqio1btqlEY0prnJJpc=
 			</data>
 			<key>hash2</key>
 			<data>
-			5xV2c60T0KnOvj8njrilaoTfP/4lh168xqesgbzMyZk=
+			2Zs09DZ/PAcSew6lrCloTB+roDfWxp52GBpiXI488LI=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/arm64.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ktqmtN1H6G0PlsVgpc1jZKDV+rw=
+			/dbJiZJwKmWgp75HpAGR7c0DLfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			kTcKUqIhRgdY+1VW/BMe+PbpWCJd02jPfHnWs0TzGVc=
+			xiUbh1bjeyv21ShPWW+Y2A23IQ1Z1Zie/qGvIboji5A=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7-apple-ios.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Wx6jRI3QFZGQ1IN1bc0OARAi61E=
+			VL6bqLQD7RwRBQSZcxp47PD27VE=
 			</data>
 			<key>hash2</key>
 			<data>
-			mmJndTJYTz7Jtt/q1GE9XgWWXx44PETgtM5cMx1bmO0=
+			Zr77fVhsSXFw/N+Tt8wQPHHmuxJRgWwRtv1rPEw39Z0=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7-apple-ios.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			qHzL6lNM7iJlpYRZqqPXJbsIbHY=
+			CKrHRv0zJA2HNxEwE4HCnHKjpfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			JLUyThTf4Et1Hm1EmrpHxmDIF83cOoA12M2HVk3phJM=
+			prIBiq3PubI8wW4AqA7/IImeFC4nQGqtMawmg7aZ/Yw=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7.swiftdoc</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Wx6jRI3QFZGQ1IN1bc0OARAi61E=
+			VL6bqLQD7RwRBQSZcxp47PD27VE=
 			</data>
 			<key>hash2</key>
 			<data>
-			mmJndTJYTz7Jtt/q1GE9XgWWXx44PETgtM5cMx1bmO0=
+			Zr77fVhsSXFw/N+Tt8wQPHHmuxJRgWwRtv1rPEw39Z0=
 			</data>
 		</dict>
-		<key>Modules/AntMediaSDK.swiftmodule/armv7.swiftmodule</key>
+		<key>Modules/WebRTCiOSSDK.swiftmodule/armv7.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			qHzL6lNM7iJlpYRZqqPXJbsIbHY=
+			CKrHRv0zJA2HNxEwE4HCnHKjpfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			JLUyThTf4Et1Hm1EmrpHxmDIF83cOoA12M2HVk3phJM=
+			prIBiq3PubI8wW4AqA7/IImeFC4nQGqtMawmg7aZ/Yw=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			gTaCCma3aROXQW9QIx4oatnAzaU=
+			2oJ5+by+HKc9ONe63AW3gTitMjU=
 			</data>
 			<key>hash2</key>
 			<data>
-			oMasOzqTu39hinzM5ZV1F856Z2V2iGT+2ZlXElSIJXA=
+			fDFM1Hq8YlQPS9VQn2wQUwQ7ji5nsvOZawnpUAGu9as=
 			</data>
 		</dict>
 	</dict>
