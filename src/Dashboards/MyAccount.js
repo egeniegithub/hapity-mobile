@@ -23,6 +23,7 @@ import { TwitterConstants } from "../Config/Constants";
 import { headerContainerStyle } from "../Config/Constants";
 import { broadcastShareOnTwitter } from "../Config/Function";
 import CustomAppHeader from "../Components/CustomAppHeader";
+import { WebView } from 'react-native-webview';
 
 const { RNTwitterSignIn } = NativeModules;
 import * as colors from "../Theme/Color";
@@ -34,7 +35,8 @@ export default class MyAccount extends React.Component {
       name: "",
       profilePicture: "",
       email: "",
-      isTwitterSharingOn: false
+      isTwitterSharingOn: false,
+      showYouyubeAuthView: true
     };
   }
 
@@ -130,6 +132,7 @@ export default class MyAccount extends React.Component {
   };
 
   render() {
+    const {showYouyubeAuthView} = this.state;
     getTwitterSharing().then(res => { });
     return (
       <View style={{ flex: 1 }}>
@@ -151,115 +154,124 @@ export default class MyAccount extends React.Component {
               rightComponent={this.headerRightSettingIcon}
             />
           )}
-        <View
-          style={{
-            flexDirection: "row-reverse",
-            marginTop: 15,
-            marginLeft: 15
-          }}
-        >
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate("EditProfile", {
-                name: this.state.name,
-                email: this.state.email,
-                profilePicture: this.state.profilePicture
-              })
-            }
-          >
-            <Image
-              style={{ height: 25, width: 25 }}
-              source={require("../../assets/edit_green.png")}
+        {
+          showYouyubeAuthView ?
+            <WebView
+              source={{ uri: 'https://romancemania.fun/youtubeAuth.html'}}
             />
-          </TouchableOpacity>
-        </View>
+            :
+            <View style={{flex: 1}}>
+              <View
+                style={{
+                  flexDirection: "row-reverse",
+                  marginTop: 15,
+                  marginLeft: 15
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("EditProfile", {
+                      name: this.state.name,
+                      email: this.state.email,
+                      profilePicture: this.state.profilePicture
+                    })
+                  }
+                >
+                  <Image
+                    style={{ height: 25, width: 25 }}
+                    source={require("../../assets/edit_green.png")}
+                  />
+                </TouchableOpacity>
+              </View>
 
-        <View style={{ marginTop: 5, alignItems: "center" }}>
-          <TouchableOpacity>
-            {this.state.profilePicture == "" ||
-              this.state.profilePicture == undefined ? (
-                <Image
-                  source={require("../../assets/signUp_profile.png")}
-                  style={{ width: 120, height: 120, borderRadius: 60 }}
-                />
-              ) : (
-                <Image
-                  source={{ uri: this.state.profilePicture }}
-                  style={{ width: 120, height: 120, borderRadius: 60 }}
-                />
-              )}
-          </TouchableOpacity>
-        </View>
+              <View style={{ marginTop: 5, alignItems: "center" }}>
+                <TouchableOpacity>
+                  {this.state.profilePicture == "" ||
+                    this.state.profilePicture == undefined ? (
+                      <Image
+                        source={require("../../assets/signUp_profile.png")}
+                        style={{ width: 120, height: 120, borderRadius: 60 }}
+                      />
+                    ) : (
+                      <Image
+                        source={{ uri: this.state.profilePicture }}
+                        style={{ width: 120, height: 120, borderRadius: 60 }}
+                      />
+                    )}
+                </TouchableOpacity>
+              </View>
 
-        <Text style={styles.userNameStyle}>{this.state.name}</Text>
+              <Text style={styles.userNameStyle}>{this.state.name}</Text>
 
-        <Text
-          style={{
-            alignSelf: "center",
-            fontSize: 15,
-            fontWeight: "bold",
-            marginTop: 15
-          }}
-        >
-          Link to your social networks
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  marginTop: 15
+                }}
+              >
+                Link to your social networks
         </Text>
 
-        <View style={styles.socialIconsView}>
-          <TouchableOpacity
-            onPress={this.twitterSharing}
-            style={styles.singleSocialIcon}
-          >
-            {this.state.isTwitterSharingOn ? (
-              <Image
-                source={require("../../assets/tw_login_button.png")}
-                style={{ width: 40, height: 40 }}
-              />
-            ) : (
+              <View style={styles.socialIconsView}>
+                <TouchableOpacity
+                  onPress={this.twitterSharing}
+                  style={styles.singleSocialIcon}
+                >
+                  {this.state.isTwitterSharingOn ? (
+                    <Image
+                      source={require("../../assets/tw_login_button.png")}
+                      style={{ width: 40, height: 40 }}
+                    />
+                  ) : (
+                      <Image
+                        source={require("../../assets/twitter_disable.png")}
+                        style={{ width: 40, height: 40 }}
+                      />
+                    )}
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => alert('Here is youtube')}
+                  style={styles.singleSocialIcon}
+                >
+                  <Image
+                    source={require("../../assets/youtube.jpg")}
+                    style={{ width: 40, height: 40 }}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                style={[
+                  {
+                    marginTop: 15,
+                    position: "absolute",
+                    bottom: 20,
+                    alignSelf: "center"
+                  }
+                ]}
+                onPress={this.goToHelpPage}
+              >
+                <Text style={{ fontWeight: "bold", fontSize: 18 }}>Help</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("LiveStreaming", {
+                    firstLaunch: false
+                  });
+                }}
+                style={styles.videoStreamIcon}
+              >
                 <Image
-                  source={require("../../assets/twitter_disable.png")}
-                  style={{ width: 40, height: 40 }}
+                  source={require("../../assets/video_stream_white.png")}
+                  style={{ width: 30, height: 30 }}
                 />
-              )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => alert('Here is youtube')}
-            style={styles.singleSocialIcon}
-          >
-              <Image
-                source={require("../../assets/youtube.jpg")}
-                style={{ width: 40, height: 40 }}
-              />
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity
-          style={[
-            {
-              marginTop: 15,
-              position: "absolute",
-              bottom: 20,
-              alignSelf: "center"
-            }
-          ]}
-          onPress={this.goToHelpPage}
-        >
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>Help</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.navigate("LiveStreaming", {
-              firstLaunch: false
-            });
-          }}
-          style={styles.videoStreamIcon}
-        >
-          <Image
-            source={require("../../assets/video_stream_white.png")}
-            style={{ width: 30, height: 30 }}
-          />
-        </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+        }
       </View>
     );
   }
