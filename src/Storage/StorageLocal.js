@@ -11,6 +11,8 @@ const allKeys = [
   "twitterSharing",
   "twitterAuthTokenSecret",
   "listOfBroadcastToDownload",
+  "youtubeSharing",
+  "youtubeRefreshToken",
 ];
 
 // ISFrontCamera Credential
@@ -220,6 +222,45 @@ export const getTwitterSharing = async () => {
     }
   } catch (e) {}
 };
+
+// youtube sharing
+
+export const setYoutubeSharing = async data => {
+  try {
+    await AsyncStorage.setItem("youtubeSharing", data);
+  } catch (e) {}
+};
+
+export const getYoutubeSharing = async () => {
+  try {
+    const value = await AsyncStorage.getItem("youtubeSharing");
+    if (value !== null) {
+      return value;
+    } else {
+      return null;
+    }
+  } catch (e) {}
+}
+
+// youtube Refresh Token
+
+export const setYoutubeRefreshToken = async data => {
+  try {
+    await AsyncStorage.setItem("youtubeRefreshToken", data);
+  } catch (e) {}
+}
+
+export const getYoutubeRefreshToken = async () => {
+  try {
+    const value = await AsyncStorage.getItem("youtubeRefreshToken");
+    if (value !== null) {
+      return value;
+    } else {
+      return null;
+    }
+  } catch (e) {}
+};
+
 
 // remove Storage Data
 
