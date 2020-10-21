@@ -27,6 +27,7 @@ import { WebView } from 'react-native-webview';
 
 const { RNTwitterSignIn } = NativeModules;
 import * as colors from "../Theme/Color";
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 export default class MyAccount extends React.Component {
   constructor(props) {
@@ -36,11 +37,18 @@ export default class MyAccount extends React.Component {
       profilePicture: "",
       email: "",
       isTwitterSharingOn: false,
-      showYouyubeAuthView: true
+      showYouyubeAuthView: false
     };
   }
 
   componentDidMount() {
+    GoogleSignin.configure({
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      webClientId: '964621052095-230dbm2kb20r4d2e9k900g5qp1bl7qek.apps.googleusercontent.com',
+      androidClientId: '964621052095-mhrisqas4t4rfi1v374j67dmehfbil7j.apps.googleusercontent.com',
+      scopes: ['https://www.googleapis.com/auth/youtube']
+    });
     getLoginSL().then(res => {
       getProfileInfo(res.user_info.token, result => {
         if (result.status == "success") {
@@ -57,6 +65,26 @@ export default class MyAccount extends React.Component {
       this.setState({ isTwitterSharingOn: JSON.parse(res) });
     });
   }
+
+  googleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(' Data from signIn  : ', userInfo);
+    } catch (error) {
+      alert(error);
+      console.log('Error while login :  ', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
 
   headerRightSettingIcon = () => {
     return (
@@ -132,7 +160,7 @@ export default class MyAccount extends React.Component {
   };
 
   render() {
-    const {showYouyubeAuthView} = this.state;
+    const { showYouyubeAuthView } = this.state;
     getTwitterSharing().then(res => { });
     return (
       <View style={{ flex: 1 }}>
@@ -157,10 +185,10 @@ export default class MyAccount extends React.Component {
         {
           showYouyubeAuthView ?
             <WebView
-              source={{ uri: 'https://romancemania.fun/youtubeAuth.html'}}
+              source={{ uri: 'https://romancemania.fun/youtubeAuth.html' }}
             />
             :
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   flexDirection: "row-reverse",
@@ -233,7 +261,7 @@ export default class MyAccount extends React.Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={() => alert('Here is youtube')}
+                  onPress={this.googleSignIn}
                   style={styles.singleSocialIcon}
                 >
                   <Image
