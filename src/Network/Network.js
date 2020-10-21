@@ -6,6 +6,7 @@ import { GoogleAuthConstants } from "../Config/Constants";
 const baseUrl = "https://www.hapity.com/api/";
 // const baseUrl = "http://192.168.20.251/hapity-api/api/";
 const getTokenFromAuthCodeUrl = "https://oauth2.googleapis.com/token";
+const getRefreshedTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
 
 class ApiName {
   static login = baseUrl + "login";
@@ -43,6 +44,25 @@ export const youtubeApis = {
       body: JSON.stringify(params)
     };
     processNetworkRequest(getTokenFromAuthCodeUrl, request, callback, 60000);
+  },
+
+  getRefreshedToken: (token, callback) => {
+    let params = {
+      client_id: GoogleAuthConstants.webClientId,
+      client_secret: GoogleAuthConstants.clientSecret,
+      refresh_token: token,
+      grant_type: "refresh_token",
+    };
+
+    let request = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(params)
+    };
+    processNetworkRequest(getRefreshedTokenUrl, request, callback, 60000);
   }
 };
 

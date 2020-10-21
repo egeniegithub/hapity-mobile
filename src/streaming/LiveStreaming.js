@@ -26,7 +26,8 @@ import Geolocation from "react-native-geolocation-service";
 import {
   startBroadcastUrl,
   stopBroadcast,
-  timeStampBroadcastUrl
+  timeStampBroadcastUrl,
+  youtubeApis
 } from "../Network/Network";
 import { ProgressDialog } from "react-native-simple-dialogs";
 import {
@@ -37,6 +38,7 @@ import {
   getLoginSL,
   getTwitterAuthToken,
   getTwitterSharing,
+  getYoutubeRefreshToken,
   setFrontCamera,
   setListOfBroadcastToDownload,
   setTwitterAuthToken,
@@ -98,6 +100,7 @@ class LiveStreaming extends React.Component {
       videoSizePreset: 1,
       metaInfo: {},
       isAntMediaFrontCamera: false,
+      youtubeRefreshToken: '',
     };
   }
 
@@ -168,6 +171,16 @@ class LiveStreaming extends React.Component {
         metaInfo: res
       });
     });
+
+    getYoutubeRefreshToken().then(res => {
+      youtubeApis.getRefreshedToken(res, data => {
+        if (data) {
+          this.setState({
+            youtubeRefreshToken: data.access_token
+          })
+        }
+      })
+    })
   }
 
   twitterSharing = () => {
