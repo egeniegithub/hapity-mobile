@@ -1,9 +1,11 @@
 import React from "react";
 import RNFetchBlob from "rn-fetch-blob";
+import { GoogleAuthConstants } from "../Config/Constants";
 
 // const baseUrl = "https://staging.hapity.com/api/";
 const baseUrl = "https://www.hapity.com/api/";
 // const baseUrl = "http://192.168.20.251/hapity-api/api/";
+const getTokenFromAuthCodeUrl = "https://oauth2.googleapis.com/token";
 
 class ApiName {
   static login = baseUrl + "login";
@@ -21,6 +23,28 @@ class ApiName {
   static timeStampBroadcastUrl = baseUrl + "broadcasts/update/timestamp";
   static stopBroadcast = baseUrl + "broadcasts/stop";
 }
+
+export const youtubeApis = {
+  getTokenFromAuthCode: (authCode, callback) => {
+    let params = {
+      client_id: GoogleAuthConstants.webClientId,
+      client_secret: GoogleAuthConstants.clientSecret,
+      code: authCode,
+      grant_type: "authorization_code",
+      redirect_uri: GoogleAuthConstants.redirectUrl
+    };
+
+    let request = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(params)
+    };
+    processNetworkRequest(getTokenFromAuthCodeUrl, request, callback, 60000);
+  }
+};
 
 export const doLogin = async (email, password, meta_info, callback) => {
   let params = {
@@ -417,7 +441,7 @@ export const startBroadcastUrl = async (
     post_plugin: post_plugin,
     image: image,
     meta_info: meta_info,
-    is_antmedia:"yes"
+    is_antmedia: "yes"
   };
   let request = {
     method: "POST",
@@ -433,7 +457,7 @@ export const startBroadcastUrl = async (
 
 function processNetworkRequest(url, request, callback, TIME_OUT) {
   let didTimeOut = false;
-  new Promise(function(resolve, reject) {
+  new Promise(function (resolve, reject) {
     const timeout = setTimeout(() => {
       didTimeOut = true;
       reject(new Error("Request Time Out."));
@@ -441,21 +465,21 @@ function processNetworkRequest(url, request, callback, TIME_OUT) {
 
     fetch(url, request)
       .then(processResponse)
-      .then(function(response) {
+      .then(function (response) {
         clearTimeout(timeout);
         if (!didTimeOut) {
           resolve(response);
         }
       })
-      .catch(function(err) {
+      .catch(function (err) {
         if (didTimeOut) return;
         reject(err);
       });
   })
-    .then(function(response) {
+    .then(function (response) {
       callback(response.data);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       err.didTimeOut = didTimeOut;
       processError(err, callback);
     });

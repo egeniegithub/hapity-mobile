@@ -10,7 +10,7 @@ import {
   Platform
 } from "react-native";
 import { Header } from "react-native-elements";
-import { getProfileInfo } from "../Network/Network";
+import { getProfileInfo, youtubeApis } from "../Network/Network";
 import {
   getLoginSL,
   getTwitterAuthToken,
@@ -152,10 +152,12 @@ export default class MyAccount extends React.Component {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      const { idToken } = userInfo;
-      setYoutubeRefreshToken(idToken).then(() => {
-        this.youtubeSharing();
-      });
+      const { serverAuthCode } = userInfo;
+      youtubeApis.getTokenFromAuthCode(serverAuthCode, res => {
+        setYoutubeRefreshToken(res.refresh_token).then(() => {
+          this.youtubeSharing();
+        });
+      })
     } catch (error) {
       console.log('Error while google login : ', error);
     }

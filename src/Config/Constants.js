@@ -82,7 +82,9 @@ export const TwitterConstants = {
 export const GoogleAuthConstants = {
   webClientId: '964621052095-230dbm2kb20r4d2e9k900g5qp1bl7qek.apps.googleusercontent.com',
   androidClientId: '964621052095-mhrisqas4t4rfi1v374j67dmehfbil7j.apps.googleusercontent.com',
-  scopes: ['https://www.googleapis.com/auth/youtube']
+  scopes: ['https://www.googleapis.com/auth/youtube'],
+  clientSecret: "i6Dyv80acU0T3Fhbx_Y_HWIh",
+  redirectUrl: "https://romancemania.fun",
 }
 
 export const imageOptions = {
