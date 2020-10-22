@@ -548,6 +548,18 @@ class LiveStreaming extends React.Component {
     }
   };
 
+  youtubeApisErrorDisplay = (youtubeError) => {
+    if (youtubeError?.error) {
+      this.setState({
+        startBroadcastDialog: false,
+      }, () => {
+        setTimeout(function () {
+          alert(youtubeError.error.message);
+        }, 50)
+      })
+    }
+  }
+
   broadcastStart = () => {
     const { isYoutubeSharing, youtubeAccessToken, titleBroadcast } = this.state;
     this.setState(
@@ -559,18 +571,19 @@ class LiveStreaming extends React.Component {
       () => {
 
         if (isYoutubeSharing) {
-          youtubeApis.createLiveBroadcast(youtubeAccessToken, titleBroadcast, yotubeResponse => {
-            console.log('Youtube Response Here.. . ', yotubeResponse);
-            if (yotubeResponse?.error) {
-              this.setState({
-                startBroadcastDialog: false,
-              }, () => {
-                setTimeout(function () {
-                  alert(yotubeResponse.error.message);
-                }, 50)
-              })
-            } else if (yotubeResponse?.status?.lifeCycleStatus === "created") {
-              
+          youtubeApis.createLiveBroadcast(youtubeAccessToken, titleBroadcast, broadcastResponse => {
+            console.log('Youtube Response Here.. . ', broadcastResponse);
+            if (broadcastResponse?.status?.lifeCycleStatus === "created") {
+              youtubeApis.createYoutubeStream(youtubeAccessToken, titleBroadcast, streamResponse => {
+                console.log('STREAM M M MM  :  ', streamResponse);
+                if (streamResponse?.state?.streamStatus === "ready") {
+
+                } else {
+                  this.youtubeApisErrorDisplay(streamResponse)
+                }
+              });
+            } else {
+              this.youtubeApisErrorDisplay(broadcastResponse)
             }
           })
         }

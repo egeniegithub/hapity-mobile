@@ -9,6 +9,7 @@ const baseUrl = "https://www.hapity.com/api/";
 const getTokenFromAuthCodeUrl = "https://oauth2.googleapis.com/token";
 const getAccessTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
 const createLiveBroadcastUrl = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet%2Cstatus%2CcontentDetails";
+const createYoutubestreamUrl = "https://youtube.googleapis.com/youtube/v3/liveStreams?part=snippet%2Ccdn%2CcontentDetails%2Cstatus";
 
 class ApiName {
   static login = baseUrl + "login";
@@ -103,6 +104,37 @@ export const youtubeApis = {
       body: JSON.stringify(params)
     };
     processNetworkRequest(createLiveBroadcastUrl, request, callback, 60000);
+  },
+
+  createYoutubeStream : (token, title, callback) => {
+    if (!title) {
+      title = "Untitled"
+    }
+    let params = {
+      snippet: {
+        title: title,
+        description: ""
+      },
+      cdn: {
+        frameRate: "60fps",
+        ingestionType: "rtmp",
+        resolution: "1080p"
+      },
+      contentDetails: {
+        isReusable: false
+      }
+    };
+
+    let request = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(params)
+    };
+    processNetworkRequest(createYoutubestreamUrl, request, callback, 60000);
   },
 
 };
