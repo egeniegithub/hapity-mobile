@@ -106,7 +106,7 @@ class LiveStreaming extends React.Component {
       videoSizePreset: 1,
       metaInfo: {},
       isAntMediaFrontCamera: false,
-      youtubeRefreshToken: '',
+      youtubeAccessToken: '',
       isYoutubeSharing: false,
     };
   }
@@ -161,11 +161,15 @@ class LiveStreaming extends React.Component {
       });
     });
 
+    this.getAccessTokenForStream();
+  }
+
+  getAccessTokenForStream = () => {
     getYoutubeRefreshToken().then(res => {
-      youtubeApis.getRefreshedToken(res, data => {
+      youtubeApis.getAccessToken(res, data => {
         if (data) {
           this.setState({
-            youtubeRefreshToken: data.access_token
+            youtubeAccessToken: data.access_token
           })
         }
       })
@@ -202,7 +206,9 @@ class LiveStreaming extends React.Component {
           this.googleSignIn();
         } else {
           setYoutubeSharing("true").then(() => {
-            this.setState({ isYoutubeSharing: true });
+            this.setState({
+              isYoutubeSharing: true
+            });
           });
         }
       });
@@ -224,6 +230,13 @@ class LiveStreaming extends React.Component {
       youtubeApis.getTokenFromAuthCode(serverAuthCode, res => {
         setYoutubeRefreshToken(res.refresh_token).then(() => {
           this.youtubeSharing();
+          youtubeApis.getAccessToken(res.refresh_token, data => {
+            if (data) {
+              this.setState({
+                youtubeAccessToken: data.access_token
+              })
+            }
+          })
         });
       })
     } catch (error) {
@@ -536,6 +549,7 @@ class LiveStreaming extends React.Component {
   };
 
   broadcastStart = () => {
+    const { isYoutubeSharing, youtubeAccessToken, titleBroadcast } = this.state;
     this.setState(
       {
         startBroadcastDialog: true,
@@ -543,6 +557,24 @@ class LiveStreaming extends React.Component {
         broadcastStartOnFirstLaunch: false
       },
       () => {
+
+        if (isYoutubeSharing) {
+          youtubeApis.createLiveBroadcast(youtubeAccessToken, titleBroadcast, yotubeResponse => {
+            console.log('Youtube Response Here.. . ', yotubeResponse);
+            if (yotubeResponse?.error) {
+              this.setState({
+                startBroadcastDialog: false,
+              }, () => {
+                setTimeout(function () {
+                  alert(yotubeResponse.error.message);
+                }, 50)
+              })
+            } else if (yotubeResponse?.status?.lifeCycleStatus === "created") {
+              
+            }
+          })
+        }
+        return
         getIsSensitive().then(res => {
           let isSensitive = "NO";
           if (JSON.parse(res)) {

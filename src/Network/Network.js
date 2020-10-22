@@ -1,12 +1,14 @@
 import React from "react";
 import RNFetchBlob from "rn-fetch-blob";
 import { GoogleAuthConstants } from "../Config/Constants";
+import moment from 'moment';
 
 // const baseUrl = "https://staging.hapity.com/api/";
 const baseUrl = "https://www.hapity.com/api/";
 // const baseUrl = "http://192.168.20.251/hapity-api/api/";
 const getTokenFromAuthCodeUrl = "https://oauth2.googleapis.com/token";
-const getRefreshedTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
+const getAccessTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
+const createLiveBroadcastUrl = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet%2Cstatus%2CcontentDetails";
 
 class ApiName {
   static login = baseUrl + "login";
@@ -46,7 +48,7 @@ export const youtubeApis = {
     processNetworkRequest(getTokenFromAuthCodeUrl, request, callback, 60000);
   },
 
-  getRefreshedToken: (token, callback) => {
+  getAccessToken: (token, callback) => {
     let params = {
       client_id: GoogleAuthConstants.webClientId,
       client_secret: GoogleAuthConstants.clientSecret,
@@ -62,8 +64,47 @@ export const youtubeApis = {
       },
       body: JSON.stringify(params)
     };
-    processNetworkRequest(getRefreshedTokenUrl, request, callback, 60000);
-  }
+    processNetworkRequest(getAccessTokenUrl, request, callback, 60000);
+  },
+
+  createLiveBroadcast: (token, title, callback) => {
+    if (!title) {
+      title = "Untitled"
+    }
+    let params = {
+      snippet: {
+        title: title,
+        scheduledStartTime: moment().format(),
+      },
+      contentDetails: {
+        enableClosedCaptions: true,
+        enableContentEncryption: true,
+        enableDvr: true,
+        recordFromStart: true,
+        startWithSlate: true,
+        enableAutoStart: true,
+        enableAutoStop: true,
+        monitorStream: {
+          enableMonitorStream: false
+        }
+      },
+      status: {
+        privacyStatus: "public"
+      }
+    };
+
+    let request = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(params)
+    };
+    processNetworkRequest(createLiveBroadcastUrl, request, callback, 60000);
+  },
+
 };
 
 export const doLogin = async (email, password, meta_info, callback) => {
