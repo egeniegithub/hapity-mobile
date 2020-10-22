@@ -10,6 +10,7 @@ const getTokenFromAuthCodeUrl = "https://oauth2.googleapis.com/token";
 const getAccessTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
 const createLiveBroadcastUrl = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet%2Cstatus%2CcontentDetails";
 const createYoutubestreamUrl = "https://youtube.googleapis.com/youtube/v3/liveStreams?part=snippet%2Ccdn%2CcontentDetails%2Cstatus";
+let bindBroadcastToStreamUrl = "https://youtube.googleapis.com/youtube/v3/liveBroadcasts/bind";
 
 class ApiName {
   static login = baseUrl + "login";
@@ -136,6 +137,25 @@ export const youtubeApis = {
     };
     processNetworkRequest(createYoutubestreamUrl, request, callback, 60000);
   },
+
+  bindBroadcastToStream : (token, id, streamId, callback) => {
+    let bindUrl = `${bindBroadcastToStreamUrl}?id=${id}&streamId=${streamId}`;
+    let params = {
+      id,
+      streamId
+    };
+
+    let request = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(params)
+    };
+    processNetworkRequest(bindUrl, request, callback, 60000);
+  }
 
 };
 

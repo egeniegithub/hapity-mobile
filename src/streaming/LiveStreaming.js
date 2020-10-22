@@ -576,8 +576,15 @@ class LiveStreaming extends React.Component {
             if (broadcastResponse?.status?.lifeCycleStatus === "created") {
               youtubeApis.createYoutubeStream(youtubeAccessToken, titleBroadcast, streamResponse => {
                 console.log('STREAM M M MM  :  ', streamResponse);
-                if (streamResponse?.state?.streamStatus === "ready") {
+                if (streamResponse?.status?.streamStatus === "ready") {
+                  youtubeApis.bindBroadcastToStream(youtubeAccessToken, broadcastResponse.id, streamResponse.id, bindResponse => {
+                    console.log('B B  B B B B B B : ', bindResponse);
+                    if (bindResponse?.status) {
 
+                    } else {
+                      this.youtubeApisErrorDisplay(bindResponse)
+                    }
+                  })
                 } else {
                   this.youtubeApisErrorDisplay(streamResponse)
                 }
