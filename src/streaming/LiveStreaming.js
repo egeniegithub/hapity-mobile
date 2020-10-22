@@ -25,6 +25,7 @@ import {
 } from "../Config/Constants";
 import Geolocation from "react-native-geolocation-service";
 import {
+  shareStreamOnYoutube,
   startBroadcastUrl,
   stopBroadcast,
   timeStampBroadcastUrl,
@@ -108,6 +109,7 @@ class LiveStreaming extends React.Component {
       isAntMediaFrontCamera: false,
       youtubeAccessToken: '',
       isYoutubeSharing: false,
+      youtubeRtmpUrl: ''
     };
   }
 
@@ -560,6 +562,103 @@ class LiveStreaming extends React.Component {
     }
   }
 
+  commonBroadcastStart = () => {
+    getIsSensitive().then(res => {
+      let isSensitive = "NO";
+      if (JSON.parse(res)) {
+        isSensitive = "YES"
+      }
+      getLoginSL().then(res => {
+        let postPlugin = "NO";
+        if (res.user_info.auth_key != "") {
+          postPlugin = "YES";
+        }
+        startBroadcastUrl(
+          res.user_info.user_id,
+          res.user_info.token,
+          this.state.titleBroadcast,
+          this.state.location,
+          isSensitive,
+          postPlugin,
+          this.state.broadcastStreamName,
+          this.state.image,
+          this.state.metaInfo,
+          result => {
+            console.log('startBroadcastUrl : ', result);
+            if (result.status === "error") {
+              this.setState({ startBroadcastDialog: false }, () => {
+                setTimeout(() => {
+                  Alert.alert("Alert", result.message, [
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        const resetAction = StackActions.reset({
+                          index: 0,
+                          actions: [
+                            NavigationActions.navigate({
+                              routeName: "History"
+                            })
+                          ]
+                        });
+                        this.props.navigation.dispatch(resetAction);
+                      }
+                    }
+                  ]);
+                }, 100);
+              });
+            }
+            else if (result.response.status === "success") {
+              if (Platform.OS == "android") {
+                this.setState(
+                  {
+                    startBroadcasting: true,
+                    broadcastID: result.response.broadcast_id
+                  },
+                  () => {
+                    setTimeout(() => {
+                      this.setState({
+                        broadcastRuning: true,
+                        startBroadcastDialog: false
+                      }, () => {
+                        this.getBroadCastView()
+                      });
+
+                    }, 100);
+                  }
+                );
+              } else {
+                this.setState(
+                  {
+                    startBroadcastDialog: false,
+                    startBroadcasting: true,
+                    broadcastID: result.response.broadcast_id
+                  },
+                  () => {
+                    this.getBroadCastView()
+                  }
+                );
+              }
+              if (this.state.isTwitterSharingOn) {
+                let twitterShareUrl = result.response.share_url;
+                twitterShareUrl = twitterShareUrl.replace("https://", "");
+                twitterShareUrl = twitterShareUrl.replace("http://", "");
+                twitterShareUrl = twitterShareUrl.replace(/\//g, "%2F");
+                broadcastShareOnTwitter(twitterShareUrl);
+              }
+              this.timeStampInterval = setInterval(() => {
+                timeStampBroadcastUrl(
+                  res.user_info.token,
+                  result.response.broadcast_id,
+                  hitResult => { }
+                );
+              }, 60000);
+            }
+          }
+        );
+      });
+    });
+  }
+
   broadcastStart = () => {
     const { isYoutubeSharing, youtubeAccessToken, titleBroadcast } = this.state;
     this.setState(
@@ -580,7 +679,13 @@ class LiveStreaming extends React.Component {
                   youtubeApis.bindBroadcastToStream(youtubeAccessToken, broadcastResponse.id, streamResponse.id, bindResponse => {
                     console.log('B B  B B B B B B : ', bindResponse);
                     if (bindResponse?.status) {
-
+                      const { ingestionAddress, streamName } = streamResponse.cdn.ingestionInfo;
+                      let url = `${ingestionAddress}/${streamName}`;
+                      this.setState({
+                        youtubeRtmpUrl: url
+                      }, () => {
+                        this.commonBroadcastStart();
+                      });
                     } else {
                       this.youtubeApisErrorDisplay(bindResponse)
                     }
@@ -593,107 +698,9 @@ class LiveStreaming extends React.Component {
               this.youtubeApisErrorDisplay(broadcastResponse)
             }
           })
+        } else {
+          this.commonBroadcastStart();
         }
-        return
-        getIsSensitive().then(res => {
-          let isSensitive = "NO";
-          if (JSON.parse(res)) {
-            isSensitive = "YES"
-          }
-          getLoginSL().then(res => {
-            let postPlugin = "NO";
-            if (res.user_info.auth_key != "") {
-              postPlugin = "YES";
-            }
-            startBroadcastUrl(
-              res.user_info.user_id,
-              res.user_info.token,
-              this.state.titleBroadcast,
-              this.state.location,
-              isSensitive,
-              postPlugin,
-              this.state.broadcastStreamName,
-              this.state.image,
-              this.state.metaInfo,
-              result => {
-                console.log('startBroadcastUrl : ', result);
-                if (result.status === "error") {
-                  this.setState({ startBroadcastDialog: false }, () => {
-                    setTimeout(() => {
-                      Alert.alert("Alert", result.message, [
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            const resetAction = StackActions.reset({
-                              index: 0,
-                              actions: [
-                                NavigationActions.navigate({
-                                  routeName: "History"
-                                })
-                              ]
-                            });
-                            this.props.navigation.dispatch(resetAction);
-                          }
-                        }
-                      ]);
-                    }, 100);
-                  });
-                }
-                else if (result.response.status === "success") {
-                  if (Platform.OS == "android") {
-                    this.setState(
-                      {
-                        startBroadcasting: true,
-                        broadcastID: result.response.broadcast_id
-                      },
-                      () => {
-                        setTimeout(() => {
-                          this.setState({
-                            broadcastRuning: true,
-                            startBroadcastDialog: false
-                          }, () => {
-                            this.getBroadCastView()
-                          });
-
-                        }, 100);
-                      }
-                    );
-                  } else {
-                    this.setState(
-                      {
-                        startBroadcastDialog: false,
-                        startBroadcasting: true,
-                        broadcastID: result.response.broadcast_id
-                      },
-                      () => {
-                        this.getBroadCastView()
-                        // setTimeout(() => {
-                        //   this.setState({
-                        //     broadcastRuning: true
-                        //   });
-                        // }, 200);
-                      }
-                    );
-                  }
-                  if (this.state.isTwitterSharingOn) {
-                    let twitterShareUrl = result.response.share_url;
-                    twitterShareUrl = twitterShareUrl.replace("https://", "");
-                    twitterShareUrl = twitterShareUrl.replace("http://", "");
-                    twitterShareUrl = twitterShareUrl.replace(/\//g, "%2F");
-                    broadcastShareOnTwitter(twitterShareUrl);
-                  }
-                  this.timeStampInterval = setInterval(() => {
-                    timeStampBroadcastUrl(
-                      res.user_info.token,
-                      result.response.broadcast_id,
-                      hitResult => { }
-                    );
-                  }, 60000);
-                }
-              }
-            );
-          });
-        });
       }
     );
   };
@@ -738,7 +745,7 @@ class LiveStreaming extends React.Component {
 
 
   getBroadCastView = () => {
-    const { keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera } = this.state;
+    const { keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera, isYoutubeSharing, youtubeRtmpUrl } = this.state;
     if (keyboardNotOpen) {
       if (Platform.OS == 'android') {
         AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
@@ -746,6 +753,16 @@ class LiveStreaming extends React.Component {
       else {
         NativeModules.LiveStream.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
       }
+    }
+
+    if (isYoutubeSharing) {
+      console.log('B B B youtubeRtmpUrl :  ', youtubeRtmpUrl);
+      getLoginSL().then(res => {
+        shareStreamOnYoutube(res.user_info.token, broadcastStreamName, youtubeRtmpUrl, shareStreamResponse => {
+          console.log('Share stream response .. ..  : ', shareStreamResponse);
+        })
+
+      })
     }
   };
 

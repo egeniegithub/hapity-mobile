@@ -3,8 +3,8 @@ import RNFetchBlob from "rn-fetch-blob";
 import { GoogleAuthConstants } from "../Config/Constants";
 import moment from 'moment';
 
-// const baseUrl = "https://staging.hapity.com/api/";
-const baseUrl = "https://www.hapity.com/api/";
+const baseUrl = "https://staging.hapity.com/api/";
+// const baseUrl = "https://www.hapity.com/api/";
 // const baseUrl = "http://192.168.20.251/hapity-api/api/";
 const getTokenFromAuthCodeUrl = "https://oauth2.googleapis.com/token";
 const getAccessTokenUrl = "https://www.googleapis.com/oauth2/v4/token";
@@ -27,6 +27,7 @@ class ApiName {
   static startBroadcastUrl = baseUrl + "broadcasts/start";
   static timeStampBroadcastUrl = baseUrl + "broadcasts/update/timestamp";
   static stopBroadcast = baseUrl + "broadcasts/stop";
+  static rtmpEndpoint = baseUrl + "add_rtmp_endpoint";
 }
 
 export const youtubeApis = {
@@ -475,6 +476,24 @@ export const stopBroadcast = async (token, broadcast_id, callback) => {
     body: JSON.stringify(params)
   };
   processNetworkRequest(ApiName.stopBroadcast, request, callback, 30000);
+};
+
+export const shareStreamOnYoutube = async (token, stream_id, rtmp_endpoint, callback) => {
+  let params = {
+    stream_id,
+    rtmp_endpoint
+  };
+
+  let request = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    },
+    body: JSON.stringify(params)
+  };
+  processNetworkRequest(ApiName.rtmpEndpoint, request, callback, 30000);
 };
 
 export const editProfile = async (
