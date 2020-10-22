@@ -31,7 +31,7 @@ import { WebView } from 'react-native-webview';
 
 const { RNTwitterSignIn } = NativeModules;
 import * as colors from "../Theme/Color";
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 export default class MyAccount extends React.Component {
   constructor(props) {
@@ -283,7 +283,7 @@ export default class MyAccount extends React.Component {
             {
               isYoutubeSharing ?
                 <Image
-                  source={require("../../assets/youtube.jpg")}
+                  source={require("../../assets/youtubeRed.png")}
                   style={{ width: 40, height: 40, borderRadius: 4 }}
                 />
                 :

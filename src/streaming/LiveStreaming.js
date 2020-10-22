@@ -20,7 +20,8 @@ import ImagePicker from "react-native-image-picker";
 import {
   headerContainerStyle,
   imageOptions,
-  TwitterConstants
+  TwitterConstants,
+  GoogleAuthConstants
 } from "../Config/Constants";
 import Geolocation from "react-native-geolocation-service";
 import {
@@ -39,11 +40,15 @@ import {
   getTwitterAuthToken,
   getTwitterSharing,
   getYoutubeRefreshToken,
+  getYoutubeSharing,
   setFrontCamera,
   setListOfBroadcastToDownload,
   setTwitterAuthToken,
   setTwitterAuthTokenSecret,
-  setTwitterSharing
+  setTwitterSharing,
+  setYoutubeSharing,
+  getTokenFromAuthCode,
+  setYoutubeRefreshToken
 } from "../Storage/StorageLocal";
 import { broadcastShareOnTwitter, streamName, deviceMetaInfo } from "../Config/Function";
 import {
@@ -65,6 +70,7 @@ import CameraScreen from "./CameraScreen";
 import CustomAppHeader from "../Components/CustomAppHeader";
 import * as colors from "../Theme/Color";
 import AntMediaLib5 from 'react-native-ant-media-lib5';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 const { RNTwitterSignIn } = NativeModules;
 var BroadcastManager = NativeModules.BroadcastModule;
@@ -101,6 +107,7 @@ class LiveStreaming extends React.Component {
       metaInfo: {},
       isAntMediaFrontCamera: false,
       youtubeRefreshToken: '',
+      isYoutubeSharing: false,
     };
   }
 
@@ -126,45 +133,27 @@ class LiveStreaming extends React.Component {
       // });
     } else {
       // stop live stream from ios native event
-        this.stopStreamNativeEvent = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
-        this.stopStreamNativeEvent.addListener(
+      this.stopStreamNativeEvent = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
+      this.stopStreamNativeEvent.addListener(
         'LiveStreamEvent', (res) => {
-        this.stopBroadcastAntGoToHistory();
-      }
-    )
+          this.stopBroadcastAntGoToHistory();
+        }
+      )
       this.iosPermission();
     }
+
+    getYoutubeSharing().then(res => {
+      this.setState({ isYoutubeSharing: JSON.parse(res) });
+    });
+
     getTwitterSharing().then(res => {
       this.setState({ isTwitterSharingOn: JSON.parse(res) });
     });
-    // const { navigation } = this.props;
-    // const firstLaunch = navigation.getParam("firstLaunch");
-    // if (firstLaunch === undefined || firstLaunch === true) {
-    //   this.setState({
-    //     broadcastStartOnFirstLaunch: true
-    //   });
-    // }
     getAutoBroadcast().then(res => {
       this.setState({
         broadcastStartOnFirstLaunch: JSON.parse(res)
       });
-      // if (JSON.parse(res)) {
-      //   const resetAction = StackActions.reset({
-      //     index: 0,
-      //     actions: [
-      //       NavigationActions.navigate({ routeName: "LiveStreaming" })
-      //     ]
-      //   });
-      //   this.props.navigation.dispatch(resetAction);
-      // } else {
-      //   const resetAction = StackActions.reset({
-      //     index: 0,
-      //     actions: [
-      //       NavigationActions.navigate({ routeName: "History" })
-      //     ]
-      //   });
-      //   this.props.navigation.dispatch(resetAction);
-      // }
+
     });
     deviceMetaInfo().then(res => {
       this.setState({
@@ -198,6 +187,47 @@ class LiveStreaming extends React.Component {
           });
         }
       });
+    }
+  };
+
+  youtubeSharing = () => {
+    const { isYoutubeSharing } = this.state;
+    if (isYoutubeSharing) {
+      setYoutubeSharing("false").then(() => {
+        this.setState({ isYoutubeSharing: false });
+      });
+    } else {
+      getYoutubeRefreshToken().then(res => {
+        if (res === null) {
+          this.googleSignIn();
+        } else {
+          setYoutubeSharing("true").then(() => {
+            this.setState({ isYoutubeSharing: true });
+          });
+        }
+      });
+    }
+  };
+
+  googleSignIn = async () => {
+    GoogleSignin.configure({
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      webClientId: GoogleAuthConstants.webClientId,
+      androidClientId: GoogleAuthConstants.androidClientId,
+      scopes: GoogleAuthConstants.scopes
+    });
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const { serverAuthCode } = userInfo;
+      youtubeApis.getTokenFromAuthCode(serverAuthCode, res => {
+        setYoutubeRefreshToken(res.refresh_token).then(() => {
+          this.youtubeSharing();
+        });
+      })
+    } catch (error) {
+      console.log('Error while google login : ', error);
     }
   };
 
@@ -829,22 +859,41 @@ class LiveStreaming extends React.Component {
 
               {!startBroadcasting && (
                 <View style={{ alignItems: "center" }}>
-                  <TouchableOpacity
-                    onPress={this.twitterSharing}
-                    style={{ marginTop: 4, padding: 8 }}
-                  >
-                    {this.state.isTwitterSharingOn ? (
-                      <Image
-                        source={require("../../assets/tw_login_button.png")}
-                        style={{ width: 30, height: 30 }}
-                      />
-                    ) : (
+                  <View style={{ flexDirection: 'row', marginTop: 4 }}>
+                    <TouchableOpacity
+                      onPress={this.twitterSharing}
+                      style={{ padding: 8 }}
+                    >
+                      {this.state.isTwitterSharingOn ? (
                         <Image
-                          source={require("../../assets/twitter_disable.png")}
+                          source={require("../../assets/tw_login_button.png")}
                           style={{ width: 30, height: 30 }}
                         />
-                      )}
-                  </TouchableOpacity>
+                      ) : (
+                          <Image
+                            source={require("../../assets/twitter_disable.png")}
+                            style={{ width: 30, height: 30 }}
+                          />
+                        )}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={this.youtubeSharing}
+                      style={{ padding: 8 }}
+                    >
+                      {this.state.isYoutubeSharing ? (
+                        <Image
+                          source={require("../../assets/youtubeRed.png")}
+                          style={{ width: 30, height: 30 }}
+                        />
+                      ) : (
+                          <Image
+                            source={require("../../assets/youtubeGray.png")}
+                            style={{ width: 30, height: 30 }}
+                          />
+                        )}
+                    </TouchableOpacity>
+                  </View>
                   <TouchableOpacity
                     onPress={() => {
                       Keyboard.dismiss();
