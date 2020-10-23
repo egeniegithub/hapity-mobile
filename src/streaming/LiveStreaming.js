@@ -744,26 +744,18 @@ class LiveStreaming extends React.Component {
 
 
 
-  getBroadCastView = () => {
+  getBroadCastView = async () => {
     const { keyboardNotOpen, broadcastStreamName, isAntMediaFrontCamera, isYoutubeSharing, youtubeRtmpUrl } = this.state;
+    let token = await getLoginSL();
     if (keyboardNotOpen) {
       if (Platform.OS == 'android') {
-        AntMediaLib5.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
+        AntMediaLib5.startLiveStream(token.user_info.token, broadcastStreamName, youtubeRtmpUrl, isAntMediaFrontCamera, isYoutubeSharing)
       }
       else {
         NativeModules.LiveStream.startLiveStream(broadcastStreamName, isAntMediaFrontCamera)
       }
     }
 
-    if (isYoutubeSharing) {
-      console.log('B B B youtubeRtmpUrl :  ', youtubeRtmpUrl);
-      getLoginSL().then(res => {
-        shareStreamOnYoutube(res.user_info.token, broadcastStreamName, youtubeRtmpUrl, shareStreamResponse => {
-          console.log('Share stream response .. ..  : ', shareStreamResponse);
-        })
-
-      })
-    }
   };
 
   startBroacastOnLaunch = value => {
