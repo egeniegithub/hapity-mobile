@@ -2,6 +2,7 @@ import React from "react";
 import RNFetchBlob from "rn-fetch-blob";
 import { GoogleAuthConstants } from "../Config/Constants";
 import moment from 'moment';
+import { getYoutubeSharing, getYoutubeRefreshToken } from '../Storage/StorageLocal';
 
 const baseUrl = "https://staging.hapity.com/api/";
 // const baseUrl = "https://www.hapity.com/api/";
@@ -108,7 +109,7 @@ export const youtubeApis = {
     processNetworkRequest(createLiveBroadcastUrl, request, callback, 60000);
   },
 
-  createYoutubeStream : (token, title, callback) => {
+  createYoutubeStream: (token, title, callback) => {
     if (!title) {
       title = "Untitled"
     }
@@ -139,7 +140,7 @@ export const youtubeApis = {
     processNetworkRequest(createYoutubestreamUrl, request, callback, 60000);
   },
 
-  bindBroadcastToStream : (token, id, streamId, callback) => {
+  bindBroadcastToStream: (token, id, streamId, callback) => {
     let bindUrl = `${bindBroadcastToStreamUrl}?id=${id}&streamId=${streamId}`;
     let params = {
       id,
@@ -402,7 +403,25 @@ export const uploadBroadcast = async (
       data: RNFetchBlob.wrap(video)
     });
   }
+  let res = await getYoutubeSharing();
+  if (JSON.parse(res)) {
+    let tokenResponse = await getYoutubeRefreshToken();
+    youtubeApis.getAccessToken(tokenResponse, data => {
+      if (data) {
+        params.push({ name: "stream_to_youtube", data: "yes" });
+        params.push({ name: "access_token", data: data.access_token });
+        params.push({ name: "refresh_token", data: tokenResponse });
+      } else {
+        // In any case response not comes.
+        commonUpload(token, params, callback, progressCallback)
+      }
+    })
+  } else {
+    commonUpload(token, params, callback, progressCallback)
+  }
+};
 
+const commonUpload = (token, params, callback, progressCallback) => {
   RNFetchBlob.fetch(
     "POST",
     ApiName.uploadBroadcast,
@@ -425,7 +444,7 @@ export const uploadBroadcast = async (
       };
       callback(errorResponse);
     });
-};
+}
 
 export const getProfileInfo = async (token, callback) => {
   let request = {
