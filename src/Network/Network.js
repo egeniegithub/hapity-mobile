@@ -411,6 +411,7 @@ export const uploadBroadcast = async (
         params.push({ name: "stream_to_youtube", data: "yes" });
         params.push({ name: "access_token", data: data.access_token });
         params.push({ name: "refresh_token", data: tokenResponse });
+        commonUpload(token, params, callback, progressCallback)
       } else {
         // In any case response not comes.
         commonUpload(token, params, callback, progressCallback)
@@ -435,9 +436,11 @@ const commonUpload = (token, params, callback, progressCallback) => {
       progressCallback(written / total);
     })
     .then(res => {
+      console.log('Upload RESPONSE  : ', res);
       callback(res);
     })
     .catch(err => {
+      console.log('UPLOAD ERROR : ', err);
       errorResponse = {
         status: "error",
         message: String(err)
